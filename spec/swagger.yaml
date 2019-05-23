@@ -40,6 +40,10 @@ responses:
     description: Заданный ресурс не найден
     schema:
       $ref: '#/definitions/GeneralError'
+  QuestionaryNotFound:
+    description: Заданный ресурс не найден
+    schema:
+      $ref: '#/definitions/GeneralError'
   Unauthorized:
     description: Ошибка авторизации
   ExternalIDConflict:
@@ -58,6 +62,11 @@ parameters:
     minLength: 1
 
 tags:
+
   - name: Payments
     x-displayName: Управление платежами
+    description: ""
+
+  - name: Questionary
+    x-displayName: Управление анкетами
     description: ""

@@ -1,0 +1,51 @@
+description: Анкета юридического лица, резидент РФ
+type: object
+allOf:
+  - $ref: '#/definitions/LegalEntity'
+  - type: object
+    properties:
+      name:
+        description: Наименование, фирменное наименование на русском языке
+        type: string
+      foreign_name:
+        description: Наименование, фирменное наименование на иностранном языке
+        type: string
+      legal_form:
+        description: Организационно-правовая форма
+        type: string
+      inn:
+        description: ИНН
+        type: string
+      registration_info:
+        $ref: '#/definitions/RegistrationInfo'
+      additional_space:
+        description: Наличие дополнительных площадей
+        type: string
+      property_info:
+        type: array
+        items:
+          $ref: '#/definitions/PropertyInfo'
+      okato_code:
+        description: код в соответствии с ОКАТО
+        type: string
+      okpo_code:
+        description: код в соответствии с ОКПО
+        type: string
+      postal_address:
+        type: string
+      founders_info:
+        $ref: '#/definitions/FoundersInfo'
+      license_info:
+        $ref: '#/definitions/LicenseInfo'
+      principal_activity:
+        $ref: '#/definitions/Activity'
+      legal_owner_info:
+        $ref: '#/definitions/LegalOwnerInfo'
+      beneficial_owners:
+        type: array
+        items:
+          $ref: '#/definitions/BeneficialOwner'
+      additional_info:
+        $ref: '#/definitions/AdditionalInfo'
+      residency_info:
+        $ref: '#/definitions/ResidencyInfo'

@@ -1,0 +1,11 @@
+type: object
+required:
+  - fio
+  - inn
+properties:
+  inn:
+    description: id владельца анкеты
+    type: string
+  fio:
+    allOf:
+      - $ref: '#/definitions/PersonAnthroponym'

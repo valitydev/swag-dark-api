@@ -1,0 +1,17 @@
+type: object
+allOf:
+  - $ref: '#/definitions/Version'
+required:
+  - id
+  - owner_id
+  - data
+properties:
+  id:
+    description: id анкеты
+    type: string
+  owner_id:
+    description: id владельца анкеты
+    type: string
+  data:
+    allOf:
+      - $ref: '#/definitions/QuestionaryData'
