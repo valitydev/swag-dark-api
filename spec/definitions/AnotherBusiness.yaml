@@ -1,0 +1,8 @@
+type: object
+allOf:
+  - $ref: '#/definitions/BusinessInfo'
+required:
+  - description
+properties:
+  description:
+    type: string

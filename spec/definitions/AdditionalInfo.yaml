@@ -1,0 +1,54 @@
+description: |
+  Сведения о целях установления и предполагаемом характере отношения с НКО,
+  сведения о целях финансово-хозяйственной деятельности индвидидуального предпринимателя,
+  деловая репутация
+type: object
+properties:
+  staff_count:
+    description: Штатная численность
+    type: integer
+    format: int32
+    minimum: 1
+    default: 1
+  has_accountant:
+    description: Наличие в штате главного бухгалтера
+    type: boolean
+  accounting:
+    description: Бух.учет ведется самим предпринимателем (в случае отстутсвия в штате главного бухгалтера)
+    type: string
+  accounting_org:
+    description: Сведения об организации, ведущей бухгалтерский учет (наименование, договор, иной документ)
+    type: string
+  nko_relation_target:
+    description: Цели установления деловых отношения с НКО
+    type: string
+  relationship_with_nko:
+    description: Предполагаемый характер деловых отношений с НКО
+    type: string
+  month_operation_count:
+    $ref: '#/definitions/MonthOperationCount'
+  month_operation_sum:
+    $ref: '#/definitions/MonthOperationSum'
+  financial_position:
+    type: array
+    items:
+      $ref: '#/definitions/FinancialPosition'
+  business_info:
+    type: array
+    items:
+      $ref: '#/definitions/BusinessInfo'
+  storage_facilities:
+    description: Наличие складских помещений
+    type: boolean
+  main_counterparties:
+    description: Основные контагенты
+    type: string
+  relation_individual_entity:
+    $ref: '#/definitions/RelationIndividualEntity'
+  benefit_third_parties:
+    description: Действует ли к выгоде третьх лиц
+    type: boolean
+  business_reputation:
+    $ref: '#/definitions/BusinessReputation'
+  russian_bank_account:
+    $ref: '#/definitions/BankAccount'

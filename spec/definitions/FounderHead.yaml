@@ -1,0 +1,6 @@
+type: object
+properties:
+  individual_person:
+    $ref: '#/definitions/IndividualPersonFounder'
+  position:
+    type: string

@@ -1,0 +1,57 @@
+post:
+  description: Создать новый платёж.
+  tags:
+    - Payments
+  operationId: createPayment
+  parameters:
+    - $ref: '#/parameters/requestID'
+    - name: Authorization
+      in: header
+      required: true
+      type: string
+      format: string
+    - name: paymentParams
+      description: Параметры создаваемого платежа
+      in: body
+      required: true
+      schema:
+        $ref: '#/definitions/PaymentParams'
+  responses:
+    '201':
+      description: Платёж создан
+      schema:
+        $ref: '#/definitions/Payment'
+    '404':
+      $ref: '#/responses/NotFound'
+    '401':
+      $ref: '#/responses/Unauthorized'
+    '400':
+      description: Ошибочные данные для запуска платежа
+      schema:
+        type: object
+        required:
+          - code
+          - message
+        properties:
+          code:
+            description: |
+              [Код ошибки](#tag/Error-Codes)
+            type: string
+            enum:
+              - invalidInvoiceStatus
+              - invoicePaymentPending
+              - invalidRequest
+              - invalidDeadline
+              - invalidPartyStatus
+              - invalidShopStatus
+              - invalidContractStatus
+              - invalidPaymentToolToken
+              - invalidPaymentSession
+              - invalidRecurrentParent
+              - operationNotPermitted
+          message:
+            description: Человекочитаемое описание ошибки
+            type: string
+            example: Invalid invoice status
+    '409':
+      $ref: '#/responses/ExternalIDConflict'

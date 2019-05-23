@@ -1,0 +1,96 @@
+post:
+  description: Сервис для работы с анкетами
+  tags:
+    - Questionary
+  operationId: saveQuestionary
+  parameters:
+    - $ref: '#/parameters/requestID'
+    - name: Authorization
+      in: header
+      required: true
+      type: string
+      format: string
+    - name: questionaryParams
+      description: Параметры создаваемого запроса
+      in: body
+      required: true
+      schema:
+        $ref: '#/definitions/QuestionaryParams'
+  responses:
+    '201':
+      description: Анкета создана
+      schema:
+        $ref: '#/definitions/Version'
+    '404':
+      $ref: '#/responses/QuestionaryNotFound'
+    '401':
+      $ref: '#/responses/Unauthorized'
+    '400':
+      description: Ошибочные данные
+      schema:
+        type: object
+        required:
+          - code
+          - message
+        properties:
+          code:
+            description: |
+              [Код ошибки](#tag/Error-Codes)
+            type: string
+            enum:
+              - questionaryNotValidException
+              - questionaryVersionConflict
+              - questionaryNotFound
+          message:
+            description: Человекочитаемое описание ошибки
+            type: string
+            example: Invalid questionary
+    '409':
+      $ref: '#/responses/ExternalIDConflict'
+
+get:
+  operationId: getQuestionary
+  parameters:
+    - $ref: '#/parameters/requestID'
+    - name: Authorization
+      in: header
+      required: true
+      type: string
+      format: string
+    - name: questionaryParams
+      description: Параметры создаваемого запроса
+      in: body
+      required: true
+      schema:
+        $ref: '#/definitions/QuestionaryGetParams'
+  responses:
+    '201':
+      description: Анкета создана
+      schema:
+        $ref: '#/definitions/Questionary'
+    '404':
+      $ref: '#/responses/QuestionaryNotFound'
+    '401':
+      $ref: '#/responses/Unauthorized'
+    '400':
+      description: Ошибочные данные
+      schema:
+        type: object
+        required:
+          - code
+          - message
+        properties:
+          code:
+            description: |
+              [Код ошибки](#tag/Error-Codes)
+            type: string
+            enum:
+              - questionaryNotValidException
+              - questionaryVersionConflict
+              - questionaryNotFound
+          message:
+            description: Человекочитаемое описание ошибки
+            type: string
+            example: Invalid questionary
+    '409':
+      $ref: '#/responses/ExternalIDConflict'

@@ -1,0 +1,12 @@
+description: Сведения о документе подтверждающем право пребывания в РФ
+type: object
+properties:
+  first_name:
+    description: Имя
+    type: string
+  second_name:
+    description: Фамилия
+    type: string
+  middle_name:
+    description: Отчество
+    type: string

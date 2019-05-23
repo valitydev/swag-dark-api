@@ -1,0 +1,7 @@
+type: object
+discriminator: referenceType
+required:
+  - referenceType
+properties:
+  referenceType:
+    type: string
