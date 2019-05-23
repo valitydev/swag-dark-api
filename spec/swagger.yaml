@@ -62,9 +62,8 @@ parameters:
     minLength: 1
 
 tags:
-
-  - name: Payments
-    x-displayName: Управление платежами
+  - name: Search
+    x-displayName: Управление поиском
     description: ""
 
   - name: Questionary
