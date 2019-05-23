@@ -54,7 +54,7 @@ allOf:
         type: object
       invoiceMetadata:
         description: Связанные с инвойсом метаданные
-          type: object
+        type: object
       statusChangedAt:
         description: Дата и время изменения статуса платежа
         type: string

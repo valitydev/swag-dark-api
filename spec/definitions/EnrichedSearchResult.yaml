@@ -1,12 +1,10 @@
 type: object
-x-merge-properties:
+allOf:
   - type: object
     required:
-      - emptyRefund
+      - payment
     properties:
-      emptyRefund:
-        description: Признак пустоты refund-a
-        type: boolean
-
-  - $ref: '#/definitions/RefundSearchResult'
-  - $ref: '#/definitions/PaymentSearchResult'
+      payment:
+        $ref: '#/definitions/PaymentSearchResult'
+      refund:
+        $ref: '#/definitions/RefundSearchResult'
