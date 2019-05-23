@@ -18,4 +18,5 @@
 6. Share you changes with the rest of the world by pushing to GitHub :smile:
 
 Для генерации java-кода используйте команду
+'mvn package' OR
 `npm run-script build && swagger-codegen generate -i web_deploy/swagger.json -l java -o ./java --api-package "com.rbkmoney.dark.api" --artifact-id "swag-dark-api" --artifact-version "1.0.0" --group-id "com.rbkmoney" --model-package "com.rbkmoney.dark.model" --additional-properties dateLibrary=java8`
