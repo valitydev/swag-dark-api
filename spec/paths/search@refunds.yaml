@@ -10,7 +10,6 @@ get:
     - $ref: '#/parameters/fromTime'
     - $ref: '#/parameters/toTime'
     - $ref: '#/parameters/limit'
-    - $ref: '#/parameters/offset'
     - name: invoiceID
       in: query
       description: Идентификатор инвойса
@@ -40,6 +39,11 @@ get:
         - pending
         - succeeded
         - failed
+    - x-rebillyMerge:
+        - name: continuationToken
+          in: query
+          required: false
+        - $ref: '#/definitions/ContinuationToken'
   responses:
     '200':
       description: Найденные возвраты
@@ -57,5 +61,3 @@ get:
       $ref: '#/responses/NotFound'
     '401':
       $ref: '#/responses/Unauthorized'
-    '400':
-      $ref: '#/responses/DefaultLogicError'
