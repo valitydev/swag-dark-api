@@ -1,0 +1,9 @@
+description: Сведения о предпренимательской деятельности
+type: object
+discriminator: businessInfoType
+required:
+  - businessInfoType
+properties:
+  businessInfoType:
+    description: Сведения о предпренимательской деятельности
+    type: string

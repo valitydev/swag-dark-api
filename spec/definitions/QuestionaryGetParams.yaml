@@ -1,0 +1,11 @@
+type: object
+required:
+  - questionary_id
+  - reference
+properties:
+  questionary_id:
+    description: id анкеты
+    type: string
+  reference:
+    allOf:
+      - $ref: '#/definitions/Reference'

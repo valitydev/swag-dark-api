@@ -1,0 +1,14 @@
+description: Индивидуальная информация
+type: object
+allOf:
+  - $ref: '#/definitions/RegistrationInfo'
+properties:
+  ogrnip:
+    description: ОГРНИП
+    type: string
+  registration_date:
+    description: Дата регистрации
+    type: string
+  registration_place:
+    description: Место государственной регистрации
+    type: string
