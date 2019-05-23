@@ -60,11 +60,89 @@ parameters:
     type: string
     maxLength: 32
     minLength: 1
+  shopID:
+    name: shopID
+    in: path
+    description: Идентификатор магазина
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  paymentID:
+    name: paymentID
+    in: path
+    description: Идентификатор платежа в рамках инвойса
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  refundID:
+    name: refundID
+    in: path
+    description: Идентификатор возврата в рамках платежа
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  customerID:
+    name: customerID
+    in: path
+    description: Идентификатор кастомера
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  payoutID:
+    name: payoutID
+    in: path
+    description: Идентификатор вывода
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  invoiceID:
+    name: invoiceID
+    in: path
+    description: Идентификатор инвойса
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
+  fromTime:
+    name: fromTime
+    in: query
+    description: Начало временного отрезка
+    required: true
+    type: string
+    format: date-time
+  toTime:
+    name: toTime
+    in: query
+    description: Конец временного отрезка
+    required: true
+    type: string
+    format: date-time
+  limit:
+    name: limit
+    in: query
+    description: Лимит выборки
+    required: true
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 1000
+  deadline:
+    name: X-Request-Deadline
+    in: header
+    description: Максимальное время обработки запроса
+    required: false
+    type: string
+    maxLength: 40
+    minLength: 1
 
 tags:
-
-  - name: Payments
-    x-displayName: Управление платежами
+  - name: Search
+    x-displayName: Управление поиском
     description: ""
 
   - name: Questionary

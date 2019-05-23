@@ -1,0 +1,10 @@
+type: object
+allOf:
+  - type: object
+    required:
+      - payment
+    properties:
+      payment:
+        $ref: '#/definitions/PaymentSearchResult'
+      refund:
+        $ref: '#/definitions/RefundSearchResult'
