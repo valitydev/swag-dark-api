@@ -67,7 +67,7 @@ get:
     '201':
       description: Анкета создана
       schema:
-        $ref: '#/definitions/Questionary'
+        $ref: '#/definitions/Snapshot'
     '404':
       $ref: '#/responses/QuestionaryNotFound'
     '401':

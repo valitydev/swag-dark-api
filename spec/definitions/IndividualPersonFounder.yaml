@@ -7,5 +7,4 @@ properties:
     description: id владельца анкеты
     type: string
   fio:
-    allOf:
-      - $ref: '#/definitions/PersonAnthroponym'
+    $ref: '#/definitions/PersonAnthroponym'
