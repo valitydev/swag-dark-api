@@ -2,20 +2,15 @@ description: Сведения о лицензии на право осущест
 type: object
 properties:
   officialNum:
-    description: Является ли налоговым резидентом США или иного иностранного государства
-    type: boolean
+    type: string
   issuerName:
-    description: Является ли Бенефициарный владалей резидентом иностранного государства
-    type: boolean
+    type: string
   issue_date:
-    description: Является ли организация Финансовым Инсистутом в соответсвии с FATCA и 173-ФЗ
-    type: boolean
+    type: string
   effective_date:
-    description: Является ли организация Финансовым Инсистутом в соответсвии с FATCA и 173-ФЗ
-    type: boolean
+    type: string
   expiration_date:
-    description: Является ли организация Финансовым Инсистутом в соответсвии с FATCA и 173-ФЗ
-    type: boolean
+    type: string
   licensed_activity:
     description: Описание вида лицензируемой деятельности
-    type: boolean
+    type: string

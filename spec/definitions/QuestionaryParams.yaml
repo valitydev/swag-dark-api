@@ -1,10 +1,9 @@
 type: object
-allOf:
-  - $ref: '#/definitions/Version'
 required:
   - id
   - owner_id
   - data
+  - version
 properties:
   id:
     description: id анкеты
@@ -13,5 +12,6 @@ properties:
     description: id владельца анкеты
     type: string
   data:
-    allOf:
-      - $ref: '#/definitions/QuestionaryData'
+    $ref: '#/definitions/QuestionaryData'
+  version:
+    $ref: '#/definitions/Version'

@@ -4,7 +4,7 @@ allOf:
   - type: object
     properties:
       russian_private_entity:
-        type: string
+        $ref: '#/definitions/RussianPrivateEntity'
       inn:
         type: string
       identity_document:

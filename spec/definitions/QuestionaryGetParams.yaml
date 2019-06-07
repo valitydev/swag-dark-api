@@ -7,5 +7,4 @@ properties:
     description: id анкеты
     type: string
   reference:
-    allOf:
-      - $ref: '#/definitions/Reference'
+    $ref: '#/definitions/Reference'
