@@ -18,7 +18,7 @@
 6. Share you changes with the rest of the world by pushing to GitHub :smile:
 
 Для генерации клиентского java-кода используйте команду 
-` npm run-script build && swagger-codegen generate -i web_deploy/swagger.json -l java -o ./java --api-package "com.rbkmoney.swag.dark_api.client" --artifact-id "swag-dark-api" --artifact-version "1.1.0" --group-id "com.rbkmoney" --model-package "com.rbkmoney.swag.dark_api.model" --library resttemplate --additional-properties dateLibrary=java8 `
+`npm run-script build && swagger-codegen generate -i web_deploy/swagger.json -l java -o ./java --api-package "com.rbkmoney.swag.dark_api.client" --artifact-id "swag-dark-api" --artifact-version "1.1.0" --group-id "com.rbkmoney" --model-package "com.rbkmoney.swag.dark_api.model" --library resttemplate --additional-properties dateLibrary=java8`
 
 Для генерации серверного java-кода используйте команду
 ` mvn package `
