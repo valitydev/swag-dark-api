@@ -1,0 +1,7 @@
+description: Изменение
+type: object
+properties:
+  partyModification:
+    $ref: '#/definitions/PartyModification'
+  claimModification:
+    $ref: '#/definitions/ClaimModification'

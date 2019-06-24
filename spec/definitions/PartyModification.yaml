@@ -1,0 +1,8 @@
+type: object
+properties:
+  contractorModification:
+    $ref: '#/definitions/ContractorModificationUnit'
+  contractModification:
+    $ref: '#/definitions/ContractModificationUnit'
+  shopModification:
+    $ref: '#/definitions/ShopModificationUnit'

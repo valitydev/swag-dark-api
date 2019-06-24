@@ -1,0 +1,8 @@
+type: object
+properties:
+  documentModification:
+    $ref: '#/definitions/DocumentModificationUnit'
+  fileModification:
+    $ref: '#/definitions/FileModificationUnit'
+  commentModification:
+    $ref: '#/definitions/CommentModificationUnit'

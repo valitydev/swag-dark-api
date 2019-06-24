@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var util = require('gulp-util')
+var util = require('gulp-util');
 var gulpConnect = require('gulp-connect');
 var connect = require('connect');
 var cors = require('cors');

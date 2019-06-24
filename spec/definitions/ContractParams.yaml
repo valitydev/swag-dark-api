@@ -1,0 +1,8 @@
+type: object
+properties:
+  contractorID:
+    type: string
+  template:
+    $ref: '#/definitions/ContractTemplateRef'
+  paymentInstitution:
+    $ref: '#/definitions/PaymentInstitutionRef'
