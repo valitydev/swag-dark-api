@@ -1,0 +1,8 @@
+type: object
+properties:
+  creation:
+    $ref: '#/definitions/Contractor'
+  identificationLevelModification:
+    $ref: '#/definitions/ContractorIdentificationLevel'
+  identityDocumentsModification:
+    $ref: '#/definitions/ContractorIdentityDocumentsModification'

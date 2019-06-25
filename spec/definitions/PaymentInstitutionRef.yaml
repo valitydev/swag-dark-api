@@ -3,4 +3,5 @@ required:
   - id
 properties:
   id:
-    type: i32
+    type: integer
+    format: int32

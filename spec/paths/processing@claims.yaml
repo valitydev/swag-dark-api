@@ -1,0 +1,18 @@
+get:
+  description: Получить список заявок участника
+  operationId: getClaims
+  tags:
+  - Claims
+  parameters:
+  - $ref: '#/parameters/requestID'
+  - $ref: '#/parameters/deadline'
+  - name: claimRequest
+    $ref: '#/definitions/ClaimRequest'
+  responses:
+    '200':
+      description: Список найденных заявок
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Claim'
+

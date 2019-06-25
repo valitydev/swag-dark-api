@@ -7,7 +7,8 @@ required:
 properties:
   modificationID:
     description: Идентификатор изменения
-    type: i64
+    type: integer
+    format: int64
   createdAt:
     description: Дата и время создания
     type: string
