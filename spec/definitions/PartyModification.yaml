@@ -1,8 +1,15 @@
 type: object
-properties:
-  contractorModification:
-    $ref: '#/definitions/ContractorModificationUnit'
-  contractModification:
-    $ref: '#/definitions/ContractModificationUnit'
-  shopModification:
-    $ref: '#/definitions/ShopModificationUnit'
+allOf:
+  - $ref: '#/definitions/Modification'
+  - type: object
+    discriminator: partyModificationType
+    required:
+      - partyModificationType
+    properties:
+      partyModificationType:
+        type: string
+        enum:
+          - ContractorModificationUnit
+          - ContractModificationUnit
+          # Implement here:
+          # - ShopModificationUnit

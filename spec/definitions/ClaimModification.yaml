@@ -1,8 +1,14 @@
 type: object
-properties:
-  documentModification:
-    $ref: '#/definitions/DocumentModificationUnit'
-  fileModification:
-    $ref: '#/definitions/FileModificationUnit'
-  commentModification:
-    $ref: '#/definitions/CommentModificationUnit'
+allOf:
+  - $ref: '#/definitions/Modification'
+  - type: object
+    discriminator: claimModificationType
+    required:
+      - claimModificationType
+    properties:
+      claimModificationType:
+        type: string
+        enum:
+          - DocumentModificationUnit
+          - FileModificationUnit
+          - CommentModificationUnit

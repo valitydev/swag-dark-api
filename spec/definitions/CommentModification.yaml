@@ -1,4 +1,10 @@
+description: Единичное изменение комментария
 type: object
+discriminator: commentModificationType
+required:
+  - commentModificationType
 properties:
-  creation:
-    $ref: '#/definitions/CommentCreated'
+  commentModificationType:
+    type: string
+    enum:
+      - CommentCreated

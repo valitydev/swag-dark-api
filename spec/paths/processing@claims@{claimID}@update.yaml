@@ -11,7 +11,7 @@ put:
     - name: changeset
       in: body
       schema:
-        $ref: '#/definitions/ClaimChangeset'
+        $ref: '#/definitions/Modification'
   responses:
     '201':
       description: Заявка обновлена

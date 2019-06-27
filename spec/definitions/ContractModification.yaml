@@ -1,4 +1,19 @@
 type: object
-properties:
-  creation:
-    $ref: '#/definitions/ContractParams'
+allOf:
+  - $ref: '#/definitions/ContractModificationUnit'
+  - type: object
+    discriminator: contractModificationType
+    required:
+      - contractModificationType
+    properties:
+      contractModificationType:
+        type: string
+        enum:
+          - ContractParams
+          - ContractTermination
+          # Implement here:
+          # - ContractAdjustmentModificationUnit
+          # - PayoutToolModificationUnit
+          # - LegalAgreement
+          # - ReportPreferences
+          # - ContractorID

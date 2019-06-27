@@ -1,22 +1,42 @@
 get:
-  description: Получить список заявок участника
-  operationId: getClaims
+  description: Поиск заявок участника
+  operationId: searchClaims
   tags:
-  - Claims
+    - Claims
   parameters:
-  - $ref: '#/parameters/requestID'
-  - $ref: '#/parameters/deadline'
-  - name: claimRequest
-    in: body
-    schema:
-      $ref: '#/definitions/ClaimRequest'
+    - $ref: '#/parameters/requestID'
+    - $ref: '#/parameters/deadline'
+    - $ref: '#/parameters/limit'
+    - name: claimStatus
+      in: query
+      description: Статус заявки для поиска
+      required: false
+      type: string
+      enum:
+        - pending
+        - review
+        - pendingAcceptance
+        - accepted
+        - denied
+        - revoked
+    - x-rebillyMerge:
+      - name: continuationToken
+        in: query
+        required: false
+      - $ref: '#/definitions/ContinuationToken'    
   responses:
     '200':
-      description: Список найденных заявок
+      description: Найденные заявки
       schema:
-        type: array
-        items:
-          $ref: '#/definitions/Claim'
+        type: object
+        properties:
+          continuationToken:
+            x-rebillyMerge:
+              - $ref: '#/definitions/ContinuationToken'
+          result:
+            type: array
+            items:
+              $ref: '#/definitions/Claim'        
     '401':
       $ref: '#/responses/Unauthorized'
     '400':

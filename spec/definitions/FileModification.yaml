@@ -1,4 +1,9 @@
 type: object
+discriminator: fileModificationType
+required:
+  - fileModificationType
 properties:
-  creation:
-    $ref: '#/definitions/FileCreated'
+  fileModificationType:
+    type: string
+    enum:
+      - FileCreated

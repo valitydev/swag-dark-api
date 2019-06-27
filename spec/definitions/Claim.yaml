@@ -1,13 +1,12 @@
 description: Заявка
 type: object
+discriminator: status
 required:
   - id
   - status
   - changeset
   - revision
   - createdAt
-  - updatedAt
-  - metadata
 properties:
   id:
     description: Идентификатор заявки

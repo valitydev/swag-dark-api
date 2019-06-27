@@ -1,4 +1,6 @@
 type: object
+allOf:
+  - $ref: "#/definitions/PartyModification"
 required:
   - id
   - modification
@@ -9,4 +11,4 @@ properties:
     maxLength: 40
     minLength: 1
   modification:
-    $ref: '#/definitions/ShopModification'
+    $ref: "#/definitions/ShopModification"

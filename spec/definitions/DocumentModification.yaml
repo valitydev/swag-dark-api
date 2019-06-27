@@ -1,4 +1,9 @@
 type: object
+discriminator: documentModificationType
+required:
+  - documentModificationType
 properties:
-  creation:
-    $ref: '#/definitions/DocumentCreated'
+  documentModificationType:
+    type: string
+    enum:
+      - DocumentCreated

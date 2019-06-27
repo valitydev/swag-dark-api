@@ -49,6 +49,8 @@ post:
       $ref: '#/responses/ExternalIDConflict'
 
 get:
+  tags:
+    - Questionary
   operationId: getQuestionary
   parameters:
     - $ref: '#/parameters/requestID'

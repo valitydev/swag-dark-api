@@ -1,8 +1,12 @@
 type: object
+discriminator: contractorModificationType
+required:
+  - contractorModificationType
 properties:
-  creation:
-    $ref: '#/definitions/Contractor'
-  identificationLevelModification:
-    $ref: '#/definitions/ContractorIdentificationLevel'
-  identityDocumentsModification:
-    $ref: '#/definitions/ContractorIdentityDocumentsModification'
+  modificationType:
+    type: string
+    enum:
+      - Contractor
+      # - ContractorIdentificationLevel
+      # - ContractorIdentityDocumentsModification
+
