@@ -11,9 +11,8 @@ allOf:
         enum:
           - ContractParams
           - ContractTermination
-          # Implement here:
-          # - ContractAdjustmentModificationUnit
-          # - PayoutToolModificationUnit
-          # - LegalAgreement
-          # - ReportPreferences
-          # - ContractorID
+          - ContractAdjustmentModificationUnit
+          - PayoutToolModificationUnit
+          - LegalAgreement
+          - ReportPreferences
+          - ContractorID

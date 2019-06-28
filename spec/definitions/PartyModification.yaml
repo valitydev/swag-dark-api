@@ -11,5 +11,4 @@ allOf:
         enum:
           - ContractorModificationUnit
           - ContractModificationUnit
-          # Implement here:
-          # - ShopModificationUnit
+          - ShopModificationUnit
