@@ -3,10 +3,9 @@ discriminator: contractorModificationType
 required:
   - contractorModificationType
 properties:
-  modificationType:
+  contractorModificationType:
     type: string
     enum:
       - Contractor
       # - ContractorIdentificationLevel
       # - ContractorIdentityDocumentsModification
-

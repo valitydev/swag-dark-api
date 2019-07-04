@@ -13,7 +13,7 @@ get:
       required: false
       type: array
       items:
-        type: enum
+        type: string
         enum:
           - pending
           - review
