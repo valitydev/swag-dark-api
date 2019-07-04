@@ -12,3 +12,4 @@ allOf:
           - DocumentModificationUnit
           - FileModificationUnit
           - CommentModificationUnit
+          - StatusModificationUnit

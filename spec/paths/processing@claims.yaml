@@ -7,18 +7,20 @@ get:
     - $ref: '#/parameters/requestID'
     - $ref: '#/parameters/deadline'
     - $ref: '#/parameters/limit'
-    - name: claimStatus
+    - name: claimStatuses
       in: query
       description: Статус заявки для поиска
       required: false
-      type: string
-      enum:
-        - pending
-        - review
-        - pendingAcceptance
-        - accepted
-        - denied
-        - revoked
+      type: array
+      items:
+        type: enum
+        enum:
+          - pending
+          - review
+          - pendingAcceptance
+          - accepted
+          - denied
+          - revoked
     - x-rebillyMerge:
       - name: continuationToken
         in: query
