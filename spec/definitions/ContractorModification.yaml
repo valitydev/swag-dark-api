@@ -1,0 +1,12 @@
+type: object
+discriminator: contractorModificationType
+required:
+  - contractorModificationType
+properties:
+  modificationType:
+    type: string
+    enum:
+      - Contractor
+      # - ContractorIdentificationLevel
+      # - ContractorIdentityDocumentsModification
+
