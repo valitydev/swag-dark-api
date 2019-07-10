@@ -23,11 +23,11 @@ build('swag-dark-api', 'docker-host') {
     }
 
     runStage('build-client') {
-      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} wc_deploy_client'
+      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} java.swag.deploy_client'
     }
 
     runStage('build-server') {
-      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} wc_deploy_server'
+      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} java.swag.deploy_server'
     }
 
     // Java
