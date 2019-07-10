@@ -64,11 +64,13 @@ endif
 MVN = mvn -s $(SETTINGS_XML) -Dcommit.number="$(NUMBER_COMMITS)"
 
 java.swag.deploy_client:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
 	$(MVN) clean && \
 	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
 	$(MVN) deploy -P="client"
 
 java.swag.deploy_server:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
 	$(MVN) clean && \
 	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
 	$(MVN) deploy -P="server"
