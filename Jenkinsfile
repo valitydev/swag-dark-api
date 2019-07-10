@@ -22,6 +22,14 @@ build('swag-dark-api', 'docker-host') {
       sh 'make wc_build'
     }
 
+    runStage('build-client') {
+      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} wc_deploy_client'
+    }
+
+    runStage('build-server') {
+      sh 'make SETTINGS_XML=${SETTINGS_XML} BRANCH_NAME=${BRANCH_NAME} wc_deploy_server'
+    }
+
     // Java
     runStage('Execute build container') {
       withCredentials([[$class: 'FileBinding', credentialsId: 'java-maven-settings.xml', variable: 'SETTINGS_XML']]) {
