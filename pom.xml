@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>swag-dark-api</artifactId>
-    <version>SNAPSHOT</version>
+    <version>1.47-a07bb6a</version>
     <packaging>jar</packaging>
 
     <name>swag-dark-api</name>
@@ -223,7 +223,7 @@
                                     <library>resttemplate</library>
 
                                     <apiPackage>${default.package}.api</apiPackage>
-                                    <modelPackage>${default.package}.api</modelPackage>
+                                    <modelPackage>${default.package}.model</modelPackage>
                                 </configuration>
                             </execution>
                         </executions>
