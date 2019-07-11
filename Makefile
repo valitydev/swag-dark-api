@@ -63,17 +63,39 @@ endif
 
 MVN = mvn -s $(SETTINGS_XML) -Dcommit.number="$(NUMBER_COMMITS)"
 
+java.swag.compile_client:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
+	$(MVN) clean && \
+	$(MVN) compile -P="client"
+
 java.swag.deploy_client:
 	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
 	$(MVN) clean && \
 	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
 	$(MVN) deploy -P="client"
 
+java.swag.install_client:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
+	$(MVN) clean && \
+    $(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
+    $(MVN) install -P="client"
+
+java.swag.compile_server:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
+	$(MVN) clean && \
+	$(MVN) compile -P="server"
+
 java.swag.deploy_server:
 	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
 	$(MVN) clean && \
 	$(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
 	$(MVN) deploy -P="server"
+
+java.swag.install_server:
+	$(if $(SETTINGS_XML),,echo "SETTINGS_XML not defined" ; exit 1)
+	$(MVN) clean && \
+    $(MVN) versions:set versions:commit -DnewVersion="$(JAVA_PKG_VERSION)" && \
+    $(MVN) install -P="server"
 
 java.compile: java.settings
 	$(MVN) compile
