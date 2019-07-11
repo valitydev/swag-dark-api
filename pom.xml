@@ -132,34 +132,79 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>2.3.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
+    <profiles>
+        <profile>
+            <id>client</id>
+            <properties>
+                <envClassifier>client</envClassifier>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-codegen-maven-plugin</artifactId>
+                        <version>2.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>generate-server</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>web_deploy/swagger.yaml</inputSpec>
+                                    <configOptions>
+                                        <dateLibrary>java8</dateLibrary>
+                                    </configOptions>
 
-                            <inputSpec>web_deploy/swagger.yaml</inputSpec>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                            </configOptions>
+                                    <language>spring</language>
+                                    <library>spring-mvc</library>
 
-                            <language>spring</language>
-                            <library>spring-mvc</library>
+                                    <apiPackage>${default.package}.api</apiPackage>
+                                    <modelPackage>${default.package}.model</modelPackage>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>server</id>
+            <properties>
+                <envClassifier>server</envClassifier>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-codegen-maven-plugin</artifactId>
+                        <version>2.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>generate-client</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <inputSpec>web_deploy/swagger.yaml</inputSpec>
+                                    <configOptions>
+                                        <dateLibrary>java8</dateLibrary>
+                                    </configOptions>
 
-                            <apiPackage>${default.package}.api</apiPackage>
-                            <modelPackage>${default.package}.model</modelPackage>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+                                    <language>java</language>
+                                    <library>resttemplate</library>
+
+                                    <apiPackage>${default.package}.api</apiPackage>
+                                    <modelPackage>${default.package}.model</modelPackage>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
 </project>

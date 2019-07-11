@@ -17,8 +17,22 @@
 5. Once you finish with the changes you can run tests using: `npm test`
 6. Share you changes with the rest of the world by pushing to GitHub :smile:
 
-Для генерации клиентского java-кода используйте команду 
-`npm run-script build && swagger-codegen generate -i web_deploy/swagger.json -l java -o ./java --api-package "com.rbkmoney.swag.dark_api.client" --artifact-id "swag-dark-api" --artifact-version "1.1.0" --group-id "com.rbkmoney" --model-package "com.rbkmoney.swag.dark_api.model" --library resttemplate --additional-properties dateLibrary=java8`
+Пример подключения в проект клиентской зависимости: 
+```      
+<dependency>
+    <groupId>com.rbkmoney</groupId>
+    <artifactId>swag-dark-api</artifactId>
+    <version>1.45-5184fdc-client</version>
+</dependency>
+```
 
-Для генерации серверного java-кода используйте команду
-` mvn package `
+Пример подключения в проект серверной зависимости:
+```
+<dependency>
+    <groupId>com.rbkmoney</groupId>
+    <artifactId>swag-dark-api</artifactId>
+    <version>1.45-5184fdc-server</version>
+</dependency>
+``` 
+
+**Нельзя использовать две зависимости одновременно (из-за одинакового пути в package)**
