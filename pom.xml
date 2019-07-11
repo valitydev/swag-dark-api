@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>swag-dark-api</artifactId>
-    <version>1.49-b78f0fc</version>
+    <version>1.50-cb3e0f0-client</version>
     <packaging>jar</packaging>
 
     <name>swag-dark-api</name>
@@ -137,23 +137,23 @@
         <plugins>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <classifier>${envClassifier}</classifier>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <classifier>${envClassifier}</classifier>-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <classifier>${envClassifier}</classifier>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <classifier>${envClassifier}</classifier>-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <configuration>
-                    <classifier>${envClassifier}-sources</classifier>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <classifier>${envClassifier}-sources</classifier>-->
+<!--                </configuration>-->
             </plugin>
         </plugins>
     </build>
