@@ -31,19 +31,6 @@ get:
       type: string
       maxLength: 40
       minLength: 1
-    - name: refundStatus
-      in: query
-      description: Статус возврата
-      type: string
-      enum:
-        - pending
-        - succeeded
-        - failed
-    - x-rebillyMerge:
-        - name: continuationToken
-          in: query
-          required: false
-        - $ref: '#/definitions/ContinuationToken'
   responses:
     '200':
       description: Найденные возвраты
@@ -57,7 +44,7 @@ get:
             type: array
             items:
               $ref: '#/definitions/EnrichedSearchResult'
-    '404':
-      $ref: '#/responses/NotFound'
     '401':
       $ref: '#/responses/Unauthorized'
+    '404':
+      $ref: '#/responses/NotFound'

@@ -1,0 +1,20 @@
+get:
+  description: Получить информацию о файле
+  operationId: getFileInfo
+  tags:
+    - Files
+  parameters:
+    - $ref: '#/parameters/requestID'
+    - $ref: '#/parameters/deadline'
+    - $ref: '#/parameters/fileID'
+  responses:
+    '200':
+      description: Данные файла
+      schema:
+        $ref: '#/definitions/FileData'
+    '400':
+      $ref: '#/responses/BadRequest'
+    '401':
+      $ref: '#/responses/Unauthorized'
+    '404':
+      $ref: '#/responses/NotFound'

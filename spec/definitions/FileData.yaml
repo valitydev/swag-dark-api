@@ -1,0 +1,28 @@
+type: object
+required:
+  - fileId
+  - fileName
+  - createdAt
+  - md5
+  - metadata
+properties:
+  fileId:
+    description: Идентификатор файла
+    type: string
+    maxLength: 40
+    minLength: 1
+  fileName:
+    description: Имя файла
+    type: string
+  createdAt:
+    description: Дата загрузки файла
+    type: string
+    format: date-time
+  md5:
+    description: сигнатура
+    type: string
+  metadata:
+    description: Дополнительная информация о файле
+    type: object
+    additionalProperties:
+      type: string

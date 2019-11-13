@@ -54,6 +54,10 @@ responses:
     description: Неверные данные
     schema:
       $ref: '#/definitions/DefaultLogicError'
+  BadRequest:
+    description: Некорректный запрос
+    schema:
+      $ref: '#/definitions/GeneralError'
 
 parameters:
   requestID:
@@ -157,6 +161,14 @@ parameters:
     type: string
     maxLength: 40
     minLength: 1
+  fileID:
+    name: fileID
+    in: path
+    description: Идентификатор файла
+    required: true
+    type: string
+    maxLength: 40
+    minLength: 1
 
 tags:
   - name: Search
@@ -179,3 +191,8 @@ tags:
       будут применены к набору данных. В случае отказа по заявке данные
       останутся в неизменном состоянии. Ближайшим аналогом заявок можно
       представить Pull Request в распределенных системах контроля версий.
+
+  - name: Files
+    x-displayName: Управление файлами
+    description: >
+      Получение ссылки на загрузку, получение ссылки на скачивание, информация о файле.
