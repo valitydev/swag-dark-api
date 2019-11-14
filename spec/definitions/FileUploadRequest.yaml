@@ -1,14 +1,7 @@
 type: object
 required:
   - metadata
-  - expiresAt
 properties:
   metadata:
     description: Дополнительная информация о файле
     type: object
-    additionalProperties:
-      type: string
-  expiresAt:
-    description: Время до которого ссылка будет считаться действительной
-    type: string
-    format: date-time
