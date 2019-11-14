@@ -1,20 +1,14 @@
 type: object
 required:
-  - fileName
   - metadata
   - expiresAt
 properties:
-  fileName:
-    description: Имя файла
-    type: string
-    maxLength: 40
-    minLength: 1
   metadata:
     description: Дополнительная информация о файле
     type: object
     additionalProperties:
       type: string
   expiresAt:
-    description: время до которого ссылка будет считаться действительной
+    description: Время до которого ссылка будет считаться действительной
     type: string
     format: date-time

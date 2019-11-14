@@ -5,7 +5,6 @@ get:
     - Files
   parameters:
     - $ref: '#/parameters/requestID'
-    - $ref: '#/parameters/deadline'
     - $ref: '#/parameters/fileID'
   responses:
     '200':

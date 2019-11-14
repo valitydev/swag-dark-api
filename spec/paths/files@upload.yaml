@@ -5,7 +5,6 @@ post:
     - Files
   parameters:
     - $ref: '#/parameters/requestID'
-    - $ref: '#/parameters/deadline'
     - name: uploadFileRequest
       in: body
       schema:
