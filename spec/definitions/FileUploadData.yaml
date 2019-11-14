@@ -3,5 +3,6 @@ properties:
   url:
     description: URL файла
     type: string
-  fileData:
-    $ref: '#/definitions/FileData'
+  fileId:
+    description: Идентификатор файла
+    type: string
