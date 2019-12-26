@@ -1,0 +1,3080 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "RBKmoney Dark Resource API",
+    "description": "\nRBKmoney Dark Resource API служит для управления секретных вызовов.\n",
+    "termsOfService": "http://rbk.money/",
+    "contact": {
+      "name": "RBKmoney support team",
+      "email": "support@rbk.money",
+      "url": "https://rbk.money"
+    }
+  },
+  "host": "api.rbk.money",
+  "basePath": "/dapi/v0",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json; charset=utf-8"
+  ],
+  "produces": [
+    "application/json; charset=utf-8"
+  ],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Для аутентификации вызовов мы используем [JWT](https://jwt.io). Cоответствующий ключ передается в заголовке.\n```shell\n Authorization: Bearer {TOKENIZATION|PRIVATE_JWT}\n```\n"
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "responses": {
+    "NotFound": {
+      "description": "Заданный ресурс не найден",
+      "schema": {
+        "$ref": "#/definitions/GeneralError"
+      }
+    },
+    "QuestionaryNotFound": {
+      "description": "Заданный ресурс не найден",
+      "schema": {
+        "$ref": "#/definitions/GeneralError"
+      }
+    },
+    "Unauthorized": {
+      "description": "Ошибка авторизации"
+    },
+    "ExternalIDConflict": {
+      "description": "Переданное значение `externalID` уже использовалось вами ранее с другими параметрами запроса",
+      "schema": {
+        "$ref": "#/definitions/ExternalIDConflictError"
+      }
+    },
+    "DefaultLogicError": {
+      "description": "Неверные данные",
+      "schema": {
+        "$ref": "#/definitions/DefaultLogicError"
+      }
+    },
+    "BadRequest": {
+      "description": "Некорректный запрос",
+      "schema": {
+        "$ref": "#/definitions/GeneralError"
+      }
+    }
+  },
+  "parameters": {
+    "requestID": {
+      "name": "X-Request-ID",
+      "in": "header",
+      "description": "Уникальный идентификатор запроса к системе",
+      "required": true,
+      "type": "string",
+      "maxLength": 32,
+      "minLength": 1
+    },
+    "shopID": {
+      "name": "shopID",
+      "in": "path",
+      "description": "Идентификатор магазина",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "paymentID": {
+      "name": "paymentID",
+      "in": "path",
+      "description": "Идентификатор платежа в рамках инвойса",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "refundID": {
+      "name": "refundID",
+      "in": "path",
+      "description": "Идентификатор возврата в рамках платежа",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "customerID": {
+      "name": "customerID",
+      "in": "path",
+      "description": "Идентификатор кастомера",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "payoutID": {
+      "name": "payoutID",
+      "in": "path",
+      "description": "Идентификатор вывода",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "invoiceID": {
+      "name": "invoiceID",
+      "in": "path",
+      "description": "Идентификатор инвойса",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "fromTime": {
+      "name": "fromTime",
+      "in": "query",
+      "description": "Начало временного отрезка",
+      "required": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "toTime": {
+      "name": "toTime",
+      "in": "query",
+      "description": "Конец временного отрезка",
+      "required": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "description": "Лимит выборки",
+      "required": true,
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "deadline": {
+      "name": "X-Request-Deadline",
+      "in": "header",
+      "description": "Максимальное время обработки запроса",
+      "required": false,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "fileID": {
+      "name": "fileID",
+      "in": "path",
+      "description": "Идентификатор файла",
+      "required": true,
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    }
+  },
+  "tags": [
+    {
+      "name": "Search",
+      "x-displayName": "Управление поиском",
+      "description": ""
+    },
+    {
+      "name": "Questionary",
+      "x-displayName": "Управление анкетами",
+      "description": ""
+    },
+    {
+      "name": "Files",
+      "x-displayName": "Управление файлами",
+      "description": "Получение ссылки на загрузку, получение ссылки на скачивание, информация о файле.\n"
+    }
+  ],
+  "paths": {
+    "/files/{fileID}/download": {
+      "get": {
+        "description": "Получить ссылку для скачивания файла",
+        "operationId": "downloadFile",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "$ref": "#/parameters/fileID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные для получения файла",
+            "schema": {
+              "$ref": "#/definitions/FileDownload"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/files/{fileID}/info": {
+      "get": {
+        "description": "Получить информацию о файле",
+        "operationId": "getFileInfo",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "$ref": "#/parameters/fileID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные файла",
+            "schema": {
+              "$ref": "#/definitions/FileData"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/files/upload": {
+      "post": {
+        "description": "Создать новый файл и сгенерировать ссылку для выгрузки файла на сервер",
+        "operationId": "uploadFile",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "name": "uploadFileRequest",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/FileUploadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Данные для загрузки файла на сервер",
+            "schema": {
+              "$ref": "#/definitions/FileUploadData"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/questionary": {
+      "post": {
+        "description": "Сервис для работы с анкетами",
+        "tags": [
+          "Questionary"
+        ],
+        "operationId": "saveQuestionary",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "questionaryParams",
+            "description": "Параметры создаваемого запроса",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionaryParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Анкета создана",
+            "schema": {
+              "$ref": "#/definitions/Version"
+            }
+          },
+          "400": {
+            "description": "Ошибочные данные",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "description": "[Код ошибки](#tag/Error-Codes)\n",
+                  "type": "string",
+                  "enum": [
+                    "questionaryNotValidException",
+                    "questionaryVersionConflict",
+                    "questionaryNotFound"
+                  ]
+                },
+                "message": {
+                  "description": "Человекочитаемое описание ошибки",
+                  "type": "string",
+                  "example": "Invalid questionary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/QuestionaryNotFound"
+          },
+          "409": {
+            "$ref": "#/responses/ExternalIDConflict"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Questionary"
+        ],
+        "operationId": "getQuestionary",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "questionaryParams",
+            "description": "Параметры создаваемого запроса",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionaryGetParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Анкета создана",
+            "schema": {
+              "$ref": "#/definitions/Snapshot"
+            }
+          },
+          "400": {
+            "description": "Ошибочные данные",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "description": "[Код ошибки](#tag/Error-Codes)\n",
+                  "type": "string",
+                  "enum": [
+                    "questionaryNotValidException",
+                    "questionaryVersionConflict",
+                    "questionaryNotFound"
+                  ]
+                },
+                "message": {
+                  "description": "Человекочитаемое описание ошибки",
+                  "type": "string",
+                  "example": "Invalid questionary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/QuestionaryNotFound"
+          },
+          "409": {
+            "$ref": "#/responses/ExternalIDConflict"
+          }
+        }
+      }
+    },
+    "/search/payments/{shopID}": {
+      "get": {
+        "description": "Поиск платежей",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "searchPayments",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "$ref": "#/parameters/deadline"
+          },
+          {
+            "$ref": "#/parameters/shopID"
+          },
+          {
+            "$ref": "#/parameters/fromTime"
+          },
+          {
+            "$ref": "#/parameters/toTime"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "Статус платежа для поиска",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "pending",
+              "processed",
+              "captured",
+              "cancelled",
+              "refunded",
+              "failed"
+            ]
+          },
+          {
+            "name": "paymentFlow",
+            "in": "query",
+            "description": "Flow платежа",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "instant",
+              "hold"
+            ]
+          },
+          {
+            "name": "paymentMethod",
+            "in": "query",
+            "description": "Метод оплаты",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "bankCard",
+              "paymentTerminal"
+            ]
+          },
+          {
+            "name": "paymentTerminalProvider",
+            "in": "query",
+            "description": "Провайдер платежного терминала",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "euroset"
+            ]
+          },
+          {
+            "name": "invoiceID",
+            "in": "query",
+            "description": "Идентификатор инвойса",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "paymentID",
+            "in": "query",
+            "description": "Идентификатор платежа",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "payerEmail",
+            "in": "query",
+            "description": "Email, указанный при оплате",
+            "required": false,
+            "type": "string",
+            "format": "email",
+            "maxLength": 100
+          },
+          {
+            "name": "payerIP",
+            "in": "query",
+            "description": "IP-адрес плательщика",
+            "required": false,
+            "type": "string",
+            "format": "ip-address",
+            "maxLength": 45
+          },
+          {
+            "name": "payerFingerprint",
+            "in": "query",
+            "description": "Уникальный отпечаток user agent'а плательщика",
+            "required": false,
+            "type": "string",
+            "maxLength": 1000
+          },
+          {
+            "name": "customerID",
+            "in": "query",
+            "description": "Идентификатор плательщика",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "bin",
+            "in": "query",
+            "description": "BIN банка-эмитента карты",
+            "required": false,
+            "type": "string",
+            "pattern": "^\\d{6,8}$"
+          },
+          {
+            "name": "lastDigits",
+            "in": "query",
+            "description": "Последние цифры номера карты",
+            "required": false,
+            "type": "string",
+            "pattern": "^\\d{2,4}$"
+          },
+          {
+            "name": "bankCardTokenProvider",
+            "in": "query",
+            "required": false,
+            "description": "Провайдер платежных токенов",
+            "type": "string",
+            "enum": [
+              "applepay",
+              "googlepay",
+              "samsungpay"
+            ]
+          },
+          {
+            "name": "bankCardPaymentSystem",
+            "in": "query",
+            "required": false,
+            "description": "Платежная система",
+            "type": "string",
+            "enum": [
+              "visa",
+              "mastercard",
+              "visaelectron",
+              "maestro",
+              "forbrugsforeningen",
+              "dankort",
+              "amex",
+              "dinersclub",
+              "discover",
+              "unionpay",
+              "jcb",
+              "nspkmir"
+            ]
+          },
+          {
+            "name": "paymentAmount",
+            "in": "query",
+            "description": "Сумма платежа",
+            "required": false,
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1
+          },
+          {
+            "name": "continuationToken",
+            "in": "query",
+            "required": false,
+            "description": "Токен, сигнализирующий о том, что в ответе передана только часть данных.\nДля получения следующей части нужно повторно обратиться к сервису, указав тот-же набор условий и полученый токен.\nЕсли токена нет, получена последняя часть данных.\n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Найденные платежи",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "continuationToken": {
+                  "description": "Токен, сигнализирующий о том, что в ответе передана только часть данных.\nДля получения следующей части нужно повторно обратиться к сервису, указав тот-же набор условий и полученый токен.\nЕсли токена нет, получена последняя часть данных.\n",
+                  "type": "string"
+                },
+                "result": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EnrichedSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/search/refunds/{shopID}": {
+      "get": {
+        "description": "Поиск возвратов",
+        "tags": [
+          "Search"
+        ],
+        "operationId": "searchRefunds",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestID"
+          },
+          {
+            "$ref": "#/parameters/deadline"
+          },
+          {
+            "$ref": "#/parameters/shopID"
+          },
+          {
+            "$ref": "#/parameters/fromTime"
+          },
+          {
+            "$ref": "#/parameters/toTime"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "name": "invoiceID",
+            "in": "query",
+            "description": "Идентификатор инвойса",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "paymentID",
+            "in": "query",
+            "description": "Идентификатор платежа",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "refundID",
+            "in": "query",
+            "description": "Идентификатор возврата",
+            "required": false,
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1
+          },
+          {
+            "name": "refundStatus",
+            "in": "query",
+            "description": "Статус возврата",
+            "type": "string",
+            "enum": [
+              "pending",
+              "succeeded",
+              "failed"
+            ]
+          },
+          {
+            "name": "continuationToken",
+            "in": "query",
+            "required": false,
+            "description": "Токен, сигнализирующий о том, что в ответе передана только часть данных.\nДля получения следующей части нужно повторно обратиться к сервису, указав тот-же набор условий и полученый токен.\nЕсли токена нет, получена последняя часть данных.\n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Найденные возвраты",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "continuationToken": {
+                  "description": "Токен, сигнализирующий о том, что в ответе передана только часть данных.\nДля получения следующей части нужно повторно обратиться к сервису, указав тот-же набор условий и полученый токен.\nЕсли токена нет, получена последняя часть данных.\n",
+                  "type": "string"
+                },
+                "result": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EnrichedSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Activity": {
+      "description": "Деятельность осуществляемая организацией",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "код",
+          "type": "string"
+        },
+        "description": {
+          "description": "Описание",
+          "type": "string"
+        }
+      }
+    },
+    "AdditionalInfo": {
+      "description": "Сведения о целях установления и предполагаемом характере отношения с НКО,\nсведения о целях финансово-хозяйственной деятельности индвидидуального предпринимателя,\nделовая репутация\n",
+      "type": "object",
+      "properties": {
+        "staff_count": {
+          "description": "Штатная численность",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1,
+          "default": 1
+        },
+        "has_accountant": {
+          "description": "Наличие в штате главного бухгалтера",
+          "type": "boolean"
+        },
+        "accounting": {
+          "description": "Бух.учет ведется самим предпринимателем (в случае отстутсвия в штате главного бухгалтера)",
+          "type": "string"
+        },
+        "accounting_org": {
+          "description": "Сведения об организации, ведущей бухгалтерский учет (наименование, договор, иной документ)",
+          "type": "string"
+        },
+        "nko_relation_target": {
+          "description": "Цели установления деловых отношения с НКО",
+          "type": "string"
+        },
+        "relationship_with_nko": {
+          "description": "Предполагаемый характер деловых отношений с НКО",
+          "type": "string"
+        },
+        "month_operation_count": {
+          "$ref": "#/definitions/MonthOperationCount"
+        },
+        "month_operation_sum": {
+          "$ref": "#/definitions/MonthOperationSum"
+        },
+        "financial_position": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FinancialPosition"
+          }
+        },
+        "business_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BusinessInfo"
+          }
+        },
+        "storage_facilities": {
+          "description": "Наличие складских помещений",
+          "type": "boolean"
+        },
+        "main_counterparties": {
+          "description": "Основные контагенты",
+          "type": "string"
+        },
+        "relation_individual_entity": {
+          "$ref": "#/definitions/RelationIndividualEntity"
+        },
+        "benefit_third_parties": {
+          "description": "Действует ли к выгоде третьх лиц",
+          "type": "boolean"
+        },
+        "business_reputation": {
+          "$ref": "#/definitions/BusinessReputation"
+        },
+        "russian_bank_account": {
+          "$ref": "#/definitions/BankAccount"
+        }
+      }
+    },
+    "AnnualFinancialStatements": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "AnnualTaxReturnWithMark": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "AnnualTaxReturnWithoutMark": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "AnnualTaxReturnWithoutMarkPaper": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "AnotherBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "BankAccount": {
+      "type": "object",
+      "discriminator": "bankAccountType",
+      "required": [
+        "bankAccountType"
+      ],
+      "properties": {
+        "bankAccountType": {
+          "type": "string"
+        }
+      }
+    },
+    "BankCardDetails": {
+      "required": [
+        "cardNumberMask",
+        "paymentSystem"
+      ],
+      "properties": {
+        "cardNumberMask": {
+          "description": "Маскированый номер карты",
+          "type": "string",
+          "pattern": "^\\d{6,8}\\*+\\d{2,4}$"
+        },
+        "bin": {
+          "description": "BIN банка-эмитента карты",
+          "type": "string",
+          "pattern": "^\\d{6,8}$"
+        },
+        "lastDigits": {
+          "description": "Последние цифры номера карты",
+          "type": "string",
+          "pattern": "^\\d{2,4}$"
+        },
+        "paymentSystem": {
+          "description": "Платежная система",
+          "type": "string",
+          "enum": [
+            "visa",
+            "mastercard",
+            "visaelectron",
+            "maestro",
+            "forbrugsforeningen",
+            "dankort",
+            "amex",
+            "dinersclub",
+            "discover",
+            "unionpay",
+            "jcb",
+            "nspkmir"
+          ]
+        },
+        "tokenProvider": {
+          "description": "Провайдер платежных токенов",
+          "type": "string",
+          "enum": [
+            "applepay",
+            "googlepay",
+            "samsungpay"
+          ]
+        }
+      }
+    },
+    "BankCardPaymentSystem": {
+      "description": "Платежная система",
+      "type": "string",
+      "enum": [
+        "visa",
+        "mastercard",
+        "visaelectron",
+        "maestro",
+        "forbrugsforeningen",
+        "dankort",
+        "amex",
+        "dinersclub",
+        "discover",
+        "unionpay",
+        "jcb",
+        "nspkmir"
+      ]
+    },
+    "BankCardTokenProvider": {
+      "description": "Провайдер платежных токенов",
+      "type": "string",
+      "enum": [
+        "applepay",
+        "googlepay",
+        "samsungpay"
+      ]
+    },
+    "BeneficialOwner": {
+      "description": "Бенефициарный владелец",
+      "type": "object",
+      "properties": {
+        "ownership_percentage": {
+          "type": "integer",
+          "format": "int8",
+          "minimum": 1,
+          "default": 1
+        },
+        "russian_private_entity": {
+          "$ref": "#/definitions/RussianPrivateEntity"
+        },
+        "inn": {
+          "description": "ИНН",
+          "type": "string"
+        },
+        "identity_document": {
+          "$ref": "#/definitions/IdentityDocument"
+        },
+        "migration_card_info": {
+          "$ref": "#/definitions/MigrationCardInfo"
+        },
+        "residence_approve": {
+          "$ref": "#/definitions/ResidenceApprove"
+        },
+        "pdl_category": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BuildingBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "BusinessInfo": {
+      "type": "object",
+      "discriminator": "businessInfoType",
+      "properties": {
+        "businessInfoType": {
+          "description": "Сведения о предпренимательской деятельности",
+          "type": "string"
+        }
+      },
+      "required": [
+        "businessInfoType"
+      ]
+    },
+    "BusinessReputation": {
+      "description": "Деловая репутация",
+      "type": "string",
+      "enum": [
+        "ProvideReviews",
+        "NoReviews"
+      ]
+    },
+    "CardData": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentTool"
+        },
+        {
+          "type": "object",
+          "description": "Банковская карта",
+          "required": [
+            "cardNumber",
+            "expDate"
+          ],
+          "properties": {
+            "cardNumber": {
+              "description": "Номер банковской карты",
+              "type": "string",
+              "pattern": "^\\d{12,19}$"
+            },
+            "expDate": {
+              "description": "Срок действия банковской карты",
+              "type": "string",
+              "pattern": "^\\d{2}\\/(\\d{2}|\\d{4})$"
+            },
+            "cvv": {
+              "description": "Код верификации",
+              "type": "string",
+              "pattern": "^\\d{3,4}$"
+            },
+            "cardHolder": {
+              "description": "Имя держателя карты",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        }
+      ]
+    },
+    "ClientInfo": {
+      "description": "Данные клиентского устройства плательщика",
+      "type": "object",
+      "required": [
+        "fingerprint"
+      ],
+      "properties": {
+        "ip": {
+          "description": "IP-адрес плательщика",
+          "type": "string",
+          "format": "ip-address",
+          "maxLength": 45,
+          "readOnly": true
+        },
+        "fingerprint": {
+          "description": "Уникальный отпечаток user agent'а плательщика",
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "ContactInfo": {
+      "description": "Контактные данные",
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "Адрес электронной почты",
+          "type": "string",
+          "format": "email",
+          "maxLength": 100
+        },
+        "phoneNumber": {
+          "description": "Номер мобильного телефона с международным префиксом согласно\n[E.164](https://en.wikipedia.org/wiki/E.164).\n",
+          "type": "string",
+          "format": "^\\+\\d{4,15}$"
+        }
+      }
+    },
+    "ContinuationToken": {
+      "description": "Токен, сигнализирующий о том, что в ответе передана только часть данных.\nДля получения следующей части нужно повторно обратиться к сервису, указав тот-же набор условий и полученый токен.\nЕсли токена нет, получена последняя часть данных.\n",
+      "type": "string"
+    },
+    "Contractor": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ContractorModification"
+        },
+        {
+          "type": "object",
+          "discriminator": "contractorType",
+          "required": [
+            "contractorType"
+          ],
+          "properties": {
+            "contractorType": {
+              "type": "string",
+              "enum": [
+                "LegalEntity"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ContractorID": {
+      "type": "string"
+    },
+    "ContractorIdentificationLevel": {
+      "type": "integer",
+      "enum": [
+        {
+          "value": 100,
+          "name": "none"
+        },
+        {
+          "value": 200,
+          "name": "partial"
+        },
+        {
+          "value": 300,
+          "name": "full"
+        }
+      ]
+    },
+    "ContractorIdentityDocumentsModification": {
+      "type": "object",
+      "required": [
+        "identityDocuments"
+      ],
+      "properties": {
+        "identityDocuments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      }
+    },
+    "ContractorModification": {
+      "type": "object",
+      "discriminator": "contractorModificationType",
+      "required": [
+        "contractorModificationType"
+      ],
+      "properties": {
+        "contractorModificationType": {
+          "type": "string",
+          "enum": [
+            "Contractor"
+          ]
+        }
+      }
+    },
+    "Currency": {
+      "description": "Валюта, символьный код согласно [ISO 4217](http://www.iso.org/iso/home/standards/currency_codes.htm).",
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "CustomerPayer": {
+      "type": "object",
+      "description": "Многоразовое платежное средство",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Payer"
+        },
+        {
+          "type": "object",
+          "required": [
+            "customerID"
+          ],
+          "properties": {
+            "customerID": {
+              "description": "Идентификатор плательщика",
+              "type": "string",
+              "maxLength": 40,
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "DefaultLogicError": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "description": "[Код ошибки](#tag/Error-Codes)\n",
+          "type": "string",
+          "enum": [
+            "invalidRequest",
+            "invalidDeadline"
+          ]
+        },
+        "message": {
+          "description": "Человекочитаемое описание ошибки",
+          "type": "string"
+        }
+      }
+    },
+    "DigitalWalletDetails": {
+      "discriminator": "digitalWalletDetailsType",
+      "required": [
+        "digitalWalletDetailsType"
+      ],
+      "properties": {
+        "digitalWalletDetailsType": {
+          "type": "string",
+          "enum": [
+            "DigitalWalletDetailsQIWI"
+          ]
+        }
+      }
+    },
+    "DigitalWalletDetailsQIWI": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/DigitalWalletDetails"
+        },
+        {
+          "type": "object",
+          "required": [
+            "phoneNumberMask"
+          ],
+          "properties": {
+            "phoneNumberMask": {
+              "type": "string",
+              "description": "Маскированный номер телефона плательщика в международном формате, выступающий\nв роли идентификатора кошелька Visa QIWI Wallet.\n",
+              "pattern": "^\\+\\d\\*{1,10}\\d{2,4}$",
+              "example": "+7******3210"
+            }
+          }
+        }
+      ]
+    },
+    "EnrichedSearchResult": {
+      "type": "object",
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "payment"
+          ],
+          "properties": {
+            "payment": {
+              "$ref": "#/definitions/PaymentSearchResult"
+            },
+            "refund": {
+              "$ref": "#/definitions/RefundSearchResult"
+            }
+          }
+        }
+      ]
+    },
+    "ExternalID": {
+      "description": "Уникальный в рамках платформы идентификатор сущности для данного участника.\n\nИспользуется для обеспечения идемпотентности запроса.\n",
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1
+    },
+    "ExternalIDConflictError": {
+      "type": "object",
+      "required": [
+        "externalID"
+      ],
+      "properties": {
+        "externalID": {
+          "description": "Переданное значение `externalID`, для которого обнаружен конфликт параметров запроса",
+          "type": "string",
+          "maxLength": 40,
+          "minLength": 1
+        },
+        "id": {
+          "description": "Идентификатор сущности, созданной предыдущим запросом с указанным `externalID`",
+          "type": "string"
+        },
+        "message": {
+          "description": "Человекочитаемое описание ошибки",
+          "type": "string"
+        }
+      }
+    },
+    "FileData": {
+      "type": "object",
+      "required": [
+        "fileId",
+        "fileName",
+        "createdAt",
+        "metadata"
+      ],
+      "properties": {
+        "fileId": {
+          "description": "Идентификатор файла",
+          "type": "string",
+          "maxLength": 40,
+          "minLength": 1
+        },
+        "fileName": {
+          "description": "Имя файла",
+          "type": "string"
+        },
+        "createdAt": {
+          "description": "Дата загрузки файла",
+          "type": "string",
+          "format": "date-time"
+        },
+        "metadata": {
+          "description": "Дополнительная информация о файле",
+          "type": "object"
+        }
+      }
+    },
+    "FileDownload": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "description": "URL файла",
+          "type": "string"
+        }
+      }
+    },
+    "FileUploadData": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "URL файла",
+          "type": "string"
+        },
+        "fileId": {
+          "description": "Идентификатор файла",
+          "type": "string"
+        }
+      }
+    },
+    "FileUploadRequest": {
+      "type": "object",
+      "required": [
+        "metadata"
+      ],
+      "properties": {
+        "metadata": {
+          "description": "Дополнительная информация о файле",
+          "type": "object"
+        }
+      }
+    },
+    "FinancialPosition": {
+      "description": "Представлены сведения (документа) о финансовом положении",
+      "type": "object",
+      "discriminator": "financialPositionType",
+      "required": [
+        "financialPositionType"
+      ],
+      "properties": {
+        "financialPositionType": {
+          "description": "Представлены сведения (документа) о финансовом положении",
+          "type": "string"
+        }
+      }
+    },
+    "Founder": {
+      "type": "object",
+      "discriminator": "founderType",
+      "required": [
+        "founderType"
+      ],
+      "properties": {
+        "founderType": {
+          "type": "string"
+        }
+      }
+    },
+    "FounderHead": {
+      "type": "object",
+      "properties": {
+        "individual_person": {
+          "$ref": "#/definitions/IndividualPersonFounder"
+        },
+        "position": {
+          "type": "string"
+        }
+      }
+    },
+    "FoundersInfo": {
+      "type": "object",
+      "properties": {
+        "founders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Founder"
+          }
+        },
+        "heads": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FounderHead"
+          }
+        },
+        "legal_owner": {
+          "$ref": "#/definitions/FounderHead"
+        }
+      }
+    },
+    "GeneralError": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "GeoLocationInfo": {
+      "description": "Информация о геопозиции",
+      "type": "object",
+      "required": [
+        "cityGeoID",
+        "countryGeoID"
+      ],
+      "properties": {
+        "cityGeoID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "countryGeoID": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Head": {
+      "description": "Маркер вершины истории",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Reference"
+        }
+      ]
+    },
+    "IdentityDocument": {
+      "description": "Сведения о предпренимательской деятельности",
+      "type": "object",
+      "discriminator": "identityDocumentType",
+      "required": [
+        "identityDocumentType"
+      ],
+      "properties": {
+        "identityDocumentType": {
+          "description": "Сведения о предпренимательской деятельности",
+          "type": "string"
+        }
+      }
+    },
+    "IndividualEntity": {
+      "type": "object",
+      "discriminator": "individualEntityType",
+      "required": [
+        "individualEntityType"
+      ],
+      "properties": {
+        "individualEntityType": {
+          "type": "string"
+        }
+      }
+    },
+    "IndividualEntityContractor": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Contractor"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "individual_entity": {
+              "$ref": "#/definitions/IndividualEntity"
+            }
+          }
+        }
+      ]
+    },
+    "IndividualPerson": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Founder"
+        },
+        {
+          "type": "object",
+          "required": [
+            "fio",
+            "inn"
+          ],
+          "properties": {
+            "inn": {
+              "description": "id владельца анкеты",
+              "type": "string"
+            },
+            "fio": {
+              "$ref": "#/definitions/PersonAnthroponym"
+            }
+          }
+        }
+      ]
+    },
+    "IndividualPersonCategories": {
+      "description": "Сведения о принадлежности физического лица к некоторым категориям граждан",
+      "type": "object",
+      "properties": {
+        "foreign_public_person": {
+          "description": "Является иностранным публичным должностным лицом",
+          "type": "boolean"
+        },
+        "foreign_relative_person": {
+          "description": "Является родственником инностранного публичного должностного лица",
+          "type": "boolean"
+        },
+        "behalf_of_foreign": {
+          "description": "Действует от имени иностранного лица",
+          "type": "boolean"
+        },
+        "worldwide_org_public_person": {
+          "description": "Является должностным лицом публичной международной организации; лицом замещающим государственные должности",
+          "type": "boolean"
+        },
+        "has_representative": {
+          "description": "Имеется представитель клиента",
+          "type": "boolean"
+        },
+        "beneficial_owner": {
+          "description": "Бенефициарным владельцем клиента является сам клиент",
+          "type": "boolean"
+        }
+      }
+    },
+    "IndividualPersonFounder": {
+      "type": "object",
+      "required": [
+        "fio",
+        "inn"
+      ],
+      "properties": {
+        "inn": {
+          "description": "id владельца анкеты",
+          "type": "string"
+        },
+        "fio": {
+          "$ref": "#/definitions/PersonAnthroponym"
+        }
+      }
+    },
+    "IndividualRegistrationInfo": {
+      "description": "Индивидуальная информация",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/RegistrationInfo"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ogrnip": {
+              "description": "ОГРНИП",
+              "type": "string"
+            },
+            "registration_date": {
+              "description": "Дата регистрации",
+              "type": "string"
+            },
+            "registration_place": {
+              "description": "Место государственной регистрации",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "IndividualResidencyInfo": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ResidencyInfo"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "tax_resident": {
+              "description": "Является ли налоговым резидентом США или иного иностранного государства",
+              "type": "boolean"
+            }
+          }
+        }
+      ]
+    },
+    "InternationalLegalEntityFounder": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Founder"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string"
+            },
+            "fullName": {
+              "description": "Полное наименование юридического лица",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "InvoiceCart": {
+      "description": "Корзина с набором позиций продаваемых товаров или услуг\n",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/definitions/InvoiceLine"
+      }
+    },
+    "InvoiceLine": {
+      "description": "Позиция товара или услуги",
+      "type": "object",
+      "required": [
+        "product",
+        "quantity",
+        "price"
+      ],
+      "properties": {
+        "product": {
+          "description": "Описание предлагаемого товара или услуги",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "quantity": {
+          "description": "Количество единиц товаров или услуг, предлагаемых на продажу в этой\nпозиции\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "default": 1
+        },
+        "price": {
+          "description": "Цена предлагаемого товара или услуги, в минорных денежных единицах, например\nв копейках в случае указания российских рублей в качестве валюты\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "cost": {
+          "description": "Суммарная стоимость позиции с учётом количества единиц товаров или услуг\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "readOnly": true
+        },
+        "taxMode": {
+          "$ref": "#/definitions/InvoiceLineTaxMode"
+        }
+      }
+    },
+    "InvoiceLineTaxMode": {
+      "description": "Схема налогообложения предлагаемого товара или услуги.\n\nУказывается, только если предлагаемый товар или услуга облагается налогом.\n",
+      "type": "object",
+      "discriminator": "type",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "Тип схемы налогообложения",
+          "type": "string",
+          "enum": [
+            "InvoiceLineTaxVAT"
+          ]
+        }
+      }
+    },
+    "InvoiceLineTaxVAT": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/InvoiceLineTaxMode"
+        },
+        {
+          "description": "Налог на добавленную стоимость в юрисдикции РФ",
+          "type": "object",
+          "required": [
+            "rate"
+          ],
+          "properties": {
+            "rate": {
+              "description": "Ставка налога",
+              "type": "string",
+              "enum": [
+                "0%",
+                "10%",
+                "18%",
+                "20%",
+                "10/110",
+                "18/118",
+                "20/120"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "LegalEntity": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Contractor"
+        },
+        {
+          "type": "object",
+          "discriminator": "legalEntityType",
+          "required": [
+            "legalEntityType"
+          ],
+          "properties": {
+            "legalEntityType": {
+              "type": "string",
+              "enum": [
+                "RussianLegalEntity"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "LegalOwnerInfo": {
+      "description": "Сведения о единоличном исполнительном органе юридического лица",
+      "type": "object",
+      "properties": {
+        "russian_private_entity": {
+          "$ref": "#/definitions/RussianPrivateEntity"
+        },
+        "inn": {
+          "description": "ИНН",
+          "type": "string"
+        },
+        "identity_document": {
+          "$ref": "#/definitions/IdentityDocument"
+        },
+        "migration_card_info": {
+          "$ref": "#/definitions/MigrationCardInfo"
+        },
+        "residence_approve": {
+          "$ref": "#/definitions/ResidenceApprove"
+        },
+        "pdl_category": {
+          "type": "boolean"
+        }
+      }
+    },
+    "LicenseInfo": {
+      "description": "Сведения о лицензии на право осуществления деятельности",
+      "type": "object",
+      "properties": {
+        "officialNum": {
+          "type": "string"
+        },
+        "issuerName": {
+          "type": "string"
+        },
+        "issue_date": {
+          "type": "string"
+        },
+        "effective_date": {
+          "type": "string"
+        },
+        "expiration_date": {
+          "type": "string"
+        },
+        "licensed_activity": {
+          "description": "Описание вида лицензируемой деятельности",
+          "type": "string"
+        }
+      }
+    },
+    "MediationInPropertyBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "MigrationCardInfo": {
+      "description": "Сведения о миграционной карте",
+      "type": "object",
+      "properties": {
+        "card_number": {
+          "description": "Является ли налоговым резидентом США или иного иностранного государства",
+          "type": "string"
+        },
+        "beginning_date": {
+          "description": "Дата начала срока пребывания",
+          "type": "string"
+        },
+        "expiration_date": {
+          "description": "Дата окончания срока пребывания",
+          "type": "string"
+        }
+      }
+    },
+    "MonthOperationCount": {
+      "description": "Планируемое кол-во операций в месяц",
+      "type": "string",
+      "enum": [
+        "LtTen",
+        "BtwTenToFifty",
+        "GtFifty"
+      ]
+    },
+    "MonthOperationSum": {
+      "description": "Планируемая сумма операция в месяц",
+      "type": "string",
+      "enum": [
+        "LtFiveHundredThousand",
+        "BtwFiveHundredThousandToOneMillion",
+        "GtOneMillion"
+      ]
+    },
+    "Payer": {
+      "type": "object",
+      "discriminator": "payerType",
+      "properties": {
+        "payerType": {
+          "description": "Тип платежного средства",
+          "type": "string"
+        }
+      },
+      "required": [
+        "payerType"
+      ]
+    },
+    "Payment": {
+      "type": "object",
+      "required": [
+        "id",
+        "invoiceID",
+        "createdAt",
+        "amount",
+        "currency",
+        "payer",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "description": "Идентификатор платежа",
+          "type": "string"
+        },
+        "externalID": {
+          "$ref": "#/definitions/ExternalID"
+        },
+        "invoiceID": {
+          "description": "Идентификатор инвойса, в рамках которого был создан платеж",
+          "type": "string"
+        },
+        "createdAt": {
+          "description": "Дата и время создания",
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "description": "Стоимость предлагаемых товаров или услуг, в минорных денежных единицах,\nнапример в копейках в случае указания российских рублей в качестве валюты.\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "currency": {
+          "description": "Валюта, символьный код согласно [ISO 4217](http://www.iso.org/iso/home/standards/currency_codes.htm).",
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "payer": {
+          "$ref": "#/definitions/Payer"
+        },
+        "makeRecurrent": {
+          "description": "Признак создания родительского рекуррентного платежа.\nУспешно проведеный платеж с этим признаком можно использовать как родительский в других рекуррентных платежах.\n",
+          "type": "boolean",
+          "default": false,
+          "readOnly": true
+        },
+        "status": {
+          "description": "Статус платежа",
+          "type": "string",
+          "enum": [
+            "pending",
+            "processed",
+            "captured",
+            "cancelled",
+            "refunded",
+            "failed"
+          ]
+        },
+        "error": {
+          "$ref": "#/definitions/PaymentError"
+        }
+      }
+    },
+    "PaymentError": {
+      "description": "[Ошибка, возникшая в процессе проведения платежа](#tag/Error-Codes)\n",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "description": "Основной код ошибки",
+          "type": "string"
+        },
+        "subError": {
+          "$ref": "#/definitions/SubError"
+        }
+      }
+    },
+    "PaymentFlow": {
+      "type": "object",
+      "discriminator": "type",
+      "default": {
+        "type": "PaymentFlowInstant"
+      },
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "Тип процесса выполнения платежа",
+          "type": "string",
+          "enum": [
+            "PaymentFlowInstant",
+            "PaymentFlowHold"
+          ]
+        }
+      }
+    },
+    "PaymentFlowHold": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentFlow"
+        },
+        {
+          "type": "object",
+          "required": [
+            "onHoldExpiration"
+          ],
+          "properties": {
+            "onHoldExpiration": {
+              "description": "Политика управления удержанием денежных средств",
+              "type": "string",
+              "default": "cancel",
+              "enum": [
+                "cancel",
+                "capture"
+              ]
+            },
+            "heldUntil": {
+              "description": "Дата и время, до которого происходит удержание денежных средств",
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true
+            }
+          }
+        }
+      ]
+    },
+    "PaymentFlowInstant": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentFlow"
+        }
+      ]
+    },
+    "PaymentMakeRecurrent": {
+      "description": "Признак создания родительского рекуррентного платежа.\nУспешно проведеный платеж с этим признаком можно использовать как родительский в других рекуррентных платежах.\n",
+      "type": "boolean",
+      "default": false
+    },
+    "PaymentParams": {
+      "type": "object",
+      "required": [
+        "shopID",
+        "dueDate",
+        "currency",
+        "product",
+        "metadata",
+        "clientInfo"
+      ],
+      "properties": {
+        "externalID": {
+          "$ref": "#/definitions/ExternalID"
+        },
+        "shopID": {
+          "description": "Идентификатор магазина",
+          "type": "string",
+          "maxLength": 40,
+          "minLength": 1
+        },
+        "dueDate": {
+          "description": "Дата и время окончания действия инвойса, после наступления которых его\nуже невозможно будет оплатить\n",
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "description": "Стоимость предлагаемых товаров или услуг, в минорных денежных единицах,\nнапример в копейках в случае указания российских рублей в качестве валюты.\n\nЕсли стоимость не указана, то стоимостью инвойса будет считаться суммарная\nстоимость позиций в корзине.\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "flow": {
+          "$ref": "#/definitions/PaymentFlow"
+        },
+        "cardData": {
+          "$ref": "#/definitions/CardData"
+        },
+        "currency": {
+          "description": "Валюта, символьный код согласно [ISO 4217](http://www.iso.org/iso/home/standards/currency_codes.htm).",
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "product": {
+          "description": "Наименование предлагаемых товаров или услуг",
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "description": "Описание предлагаемых товаров или услуг",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "cart": {
+          "$ref": "#/definitions/InvoiceCart"
+        },
+        "metadata": {
+          "description": "Метаданные, которые необходимо связать с инвойсом",
+          "type": "object"
+        },
+        "clientInfo": {
+          "$ref": "#/definitions/ClientInfo"
+        }
+      }
+    },
+    "PaymentRecurrentParent": {
+      "type": "object",
+      "description": "Родительский платеж, на основе которого создан текущий рекуррентный платеж",
+      "required": [
+        "invoiceID",
+        "paymentID"
+      ],
+      "properties": {
+        "invoiceID": {
+          "description": "Идентификатор инвойса",
+          "type": "string"
+        },
+        "paymentID": {
+          "description": "Идентификатор платежа",
+          "type": "string"
+        }
+      }
+    },
+    "PaymentResource": {
+      "type": "object",
+      "description": "Данные одноразового платежного средства",
+      "required": [
+        "paymentToolToken"
+      ],
+      "properties": {
+        "paymentToolToken": {
+          "description": "Токен платежного средства, предоставленного плательщиком",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "paymentSession": {
+          "description": "Идентификатор платежной сессии",
+          "type": "string",
+          "maxLength": 1000
+        },
+        "paymentToolDetails": {
+          "$ref": "#/definitions/PaymentToolDetails"
+        },
+        "clientInfo": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClientInfo"
+            },
+            {
+              "readOnly": true
+            }
+          ]
+        }
+      }
+    },
+    "PaymentResourcePayer": {
+      "type": "object",
+      "description": "Одноразовое платежное средство",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Payer"
+        },
+        {
+          "$ref": "#/definitions/PaymentResource"
+        },
+        {
+          "type": "object",
+          "required": [
+            "contactInfo"
+          ],
+          "properties": {
+            "contactInfo": {
+              "$ref": "#/definitions/ContactInfo"
+            }
+          }
+        }
+      ]
+    },
+    "PaymentSearchResult": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentStatus"
+        },
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "invoiceID",
+            "createdAt",
+            "amount",
+            "currency",
+            "payer",
+            "flow"
+          ],
+          "properties": {
+            "id": {
+              "description": "Идентификатор платежа",
+              "type": "string"
+            },
+            "shortID": {
+              "description": "Cокращенный идентификатор платежа и инвойса (spid)",
+              "type": "string"
+            },
+            "invoiceID": {
+              "description": "Идентификатор инвойса, в рамках которого был создан платеж",
+              "type": "string"
+            },
+            "shopID": {
+              "description": "Идентификатор магазина, в рамках которого был создан платеж",
+              "type": "string"
+            },
+            "createdAt": {
+              "description": "Дата и время создания",
+              "type": "string",
+              "format": "date-time"
+            },
+            "amount": {
+              "description": "Стоимость предлагаемых товаров или услуг, в минорных денежных\nединицах, например в копейках в случае указания российских рублей в\nкачестве валюты.\n",
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            },
+            "fee": {
+              "description": "Комиссия системы, в минорных денежных единицах",
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            },
+            "currency": {
+              "description": "Валюта, символьный код согласно [ISO 4217](http://www.iso.org/iso/home/standards/currency_codes.htm).",
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "payer": {
+              "$ref": "#/definitions/Payer"
+            },
+            "flow": {
+              "$ref": "#/definitions/PaymentFlow"
+            },
+            "geoLocationInfo": {
+              "$ref": "#/definitions/GeoLocationInfo"
+            },
+            "metadata": {
+              "description": "Связанные с платежом метаданные",
+              "type": "object"
+            },
+            "invoiceMetadata": {
+              "description": "Связанные с инвойсом метаданные",
+              "type": "object"
+            },
+            "statusChangedAt": {
+              "description": "Дата и время изменения статуса платежа",
+              "type": "string",
+              "format": "date-time"
+            },
+            "makeRecurrent": {
+              "description": "Признак создания родительского рекуррентного платежа.\nУспешно проведеный платеж с этим признаком можно использовать как родительский в других рекуррентных платежах.\n",
+              "type": "boolean",
+              "default": false,
+              "readOnly": true
+            },
+            "cart": {
+              "$ref": "#/definitions/InvoiceCart"
+            }
+          }
+        }
+      ]
+    },
+    "PaymentStatus": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "description": "Статус платежа",
+          "type": "string",
+          "enum": [
+            "pending",
+            "processed",
+            "captured",
+            "cancelled",
+            "refunded",
+            "failed"
+          ]
+        },
+        "error": {
+          "$ref": "#/definitions/PaymentError"
+        }
+      }
+    },
+    "PaymentTerminalDetails": {
+      "required": [
+        "provider"
+      ],
+      "properties": {
+        "provider": {
+          "description": "Провайдер терминальной сети",
+          "type": "string",
+          "enum": [
+            "euroset"
+          ]
+        }
+      }
+    },
+    "PaymentTerminalProvider": {
+      "description": "Провайдер терминальной сети",
+      "type": "string",
+      "enum": [
+        "euroset"
+      ]
+    },
+    "PaymentTool": {
+      "type": "object",
+      "discriminator": "paymentToolType",
+      "properties": {
+        "paymentToolType": {
+          "description": "Тип платежного средства",
+          "type": "string",
+          "enum": [
+            "CardData"
+          ]
+        }
+      },
+      "required": [
+        "paymentToolType"
+      ]
+    },
+    "PaymentToolDetails": {
+      "type": "object",
+      "discriminator": "detailsType",
+      "description": "Детали платежного средства",
+      "readOnly": true,
+      "required": [
+        "detailsType"
+      ],
+      "properties": {
+        "detailsType": {
+          "description": "Тип информации о платежном средстве",
+          "type": "string"
+        }
+      }
+    },
+    "PaymentToolDetailsBankCard": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentToolDetails"
+        },
+        {
+          "$ref": "#/definitions/BankCardDetails"
+        }
+      ]
+    },
+    "PaymentToolDetailsDigitalWallet": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentToolDetails"
+        },
+        {
+          "$ref": "#/definitions/DigitalWalletDetails"
+        }
+      ]
+    },
+    "PaymentToolDetailsPaymentTerminal": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/PaymentToolDetails"
+        },
+        {
+          "$ref": "#/definitions/PaymentTerminalDetails"
+        }
+      ]
+    },
+    "PersonAnthroponym": {
+      "description": "Сведения о документе подтверждающем право пребывания в РФ",
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "description": "Имя",
+          "type": "string"
+        },
+        "second_name": {
+          "description": "Фамилия",
+          "type": "string"
+        },
+        "middle_name": {
+          "description": "Отчество",
+          "type": "string"
+        }
+      }
+    },
+    "ProductionBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "PropertyInfo": {
+      "type": "string"
+    },
+    "QuarterlyTaxReturnWithMark": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "QuarterlyTaxReturnWithoutMark": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "Questionary": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/QuestionaryParams"
+        }
+      ]
+    },
+    "QuestionaryData": {
+      "description": "Содержание анкеты",
+      "type": "object",
+      "properties": {
+        "contactInfo": {
+          "$ref": "#/definitions/ContactInfo"
+        },
+        "shopInfo": {
+          "$ref": "#/definitions/ShopInfo"
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/BankAccount"
+        },
+        "contractor": {
+          "$ref": "#/definitions/Contractor"
+        }
+      }
+    },
+    "QuestionaryGetParams": {
+      "type": "object",
+      "required": [
+        "questionary_id",
+        "reference"
+      ],
+      "properties": {
+        "questionary_id": {
+          "description": "id анкеты",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/definitions/Reference"
+        }
+      }
+    },
+    "QuestionaryParams": {
+      "type": "object",
+      "required": [
+        "id",
+        "owner_id",
+        "data",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "description": "id анкеты",
+          "type": "string"
+        },
+        "owner_id": {
+          "description": "id владельца анкеты",
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/QuestionaryData"
+        },
+        "version": {
+          "$ref": "#/definitions/Version"
+        }
+      }
+    },
+    "RecurrentPayer": {
+      "type": "object",
+      "description": "Многоразовое платежное средство на основе другого платежа",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Payer"
+        },
+        {
+          "type": "object",
+          "required": [
+            "contactInfo",
+            "recurrentParentPayment"
+          ],
+          "properties": {
+            "contactInfo": {
+              "$ref": "#/definitions/ContactInfo"
+            },
+            "recurrentParentPayment": {
+              "$ref": "#/definitions/PaymentRecurrentParent"
+            }
+          }
+        }
+      ]
+    },
+    "Reference": {
+      "type": "object",
+      "discriminator": "referenceType",
+      "properties": {
+        "referenceType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "referenceType"
+      ]
+    },
+    "ReferenceVersion": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Reference"
+        },
+        {
+          "type": "object",
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "$ref": "#/definitions/Version"
+            }
+          }
+        }
+      ]
+    },
+    "Refund": {
+      "type": "object",
+      "required": [
+        "id",
+        "createdAt",
+        "amount",
+        "currency",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "description": "Идентификатор возврата",
+          "type": "string"
+        },
+        "createdAt": {
+          "description": "Дата и время осуществления",
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "description": "Сумма возврата, в минорных денежных единицах, например в копейках в случае указания российских рублей в качестве валюты.\n",
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1
+        },
+        "currency": {
+          "description": "Валюта, символьный код согласно [ISO 4217](http://www.iso.org/iso/home/standards/currency_codes.htm).",
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "reason": {
+          "description": "Причина осуществления возврата",
+          "type": "string"
+        },
+        "cart": {
+          "description": "Итоговая корзина предоставляемых товаров и услуг, которая должна формироваться из корзины инвойса исключением позиций, по которым производился возврат. Сумма корзины должна совпадать с суммой платежа за вычетом суммы возврата.\n",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/definitions/InvoiceLine"
+          }
+        },
+        "status": {
+          "description": "Статус возврата",
+          "type": "string",
+          "enum": [
+            "pending",
+            "succeeded",
+            "failed"
+          ]
+        },
+        "error": {
+          "description": "Данные ошибки, возникшей в процессе проведения возврата, в случае если\nвозврат был неуспешен\n",
+          "type": "object",
+          "required": [
+            "code",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "description": "Код ошибки, пригодный для обработки автоматическими системами",
+              "type": "string"
+            },
+            "message": {
+              "description": "Описание ошибки, пригодное для восприятия человеком",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "RefundSearchResult": {
+      "type": "object",
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "invoiceID",
+            "paymentID"
+          ],
+          "properties": {
+            "invoiceID": {
+              "description": "Идентификатор инвойса",
+              "type": "string"
+            },
+            "paymentID": {
+              "description": "Идентификатор платежа",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/Refund"
+        }
+      ]
+    },
+    "RefundStatus": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "description": "Статус возврата",
+          "type": "string",
+          "enum": [
+            "pending",
+            "succeeded",
+            "failed"
+          ]
+        },
+        "error": {
+          "description": "Данные ошибки, возникшей в процессе проведения возврата, в случае если\nвозврат был неуспешен\n",
+          "type": "object",
+          "required": [
+            "code",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "description": "Код ошибки, пригодный для обработки автоматическими системами",
+              "type": "string"
+            },
+            "message": {
+              "description": "Описание ошибки, пригодное для восприятия человеком",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "RegistrationInfo": {
+      "description": "Сведения о предпренимательской деятельности",
+      "type": "object",
+      "discriminator": "registrationInfoType",
+      "required": [
+        "registrationInfoType"
+      ],
+      "properties": {
+        "registrationInfoType": {
+          "type": "string"
+        }
+      }
+    },
+    "RelationIndividualEntity": {
+      "description": "В отношении индивидуального предпринимателя",
+      "type": "string",
+      "enum": [
+        "InsolvencyProceedings",
+        "BankruptJudicialDecision",
+        "LiquidationProcess"
+      ]
+    },
+    "ResidenceApprove": {
+      "description": "Сведения о документе подтверждающем право пребывания в РФ",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Наименования документа",
+          "type": "string"
+        },
+        "series": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "beginning_date": {
+          "description": "Дата начала срока действия права пребывания (проживания)",
+          "type": "string"
+        },
+        "expiration_date": {
+          "description": "Дата окончания срока действия права пребывания (проживания)",
+          "type": "string"
+        }
+      }
+    },
+    "ResidencyInfo": {
+      "description": "Информация об иностранном налоговом резиденстве",
+      "type": "object",
+      "discriminator": "residencyInfoType",
+      "required": [
+        "residencyInfoType"
+      ],
+      "properties": {
+        "residencyInfoType": {
+          "type": "string"
+        }
+      }
+    },
+    "RetailTradeBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "RussianDomesticPassport": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/IdentityDocument"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "series": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            },
+            "issuer": {
+              "description": "Наименование выдавшего паспорт органа",
+              "type": "string"
+            },
+            "issuer_code": {
+              "description": "Код подразделения выдавшего паспорт органа",
+              "type": "string"
+            },
+            "issued_at": {
+              "description": "Дата выдачи паспорта",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "RussianIndividualEntity": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/IndividualEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "russian_private_entity": {
+              "$ref": "#/definitions/RussianPrivateEntity"
+            },
+            "inn": {
+              "type": "string"
+            },
+            "identity_document": {
+              "$ref": "#/definitions/IdentityDocument"
+            },
+            "property_info": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PropertyInfo"
+              }
+            },
+            "migration_card_info": {
+              "$ref": "#/definitions/MigrationCardInfo"
+            },
+            "residence_approve": {
+              "$ref": "#/definitions/ResidenceApprove"
+            },
+            "registration_info": {
+              "$ref": "#/definitions/RegistrationInfo"
+            },
+            "license_info": {
+              "$ref": "#/definitions/LicenseInfo"
+            },
+            "individual_person_categories": {
+              "$ref": "#/definitions/IndividualPersonCategories"
+            },
+            "principal_activity": {
+              "$ref": "#/definitions/Activity"
+            },
+            "additional_info": {
+              "$ref": "#/definitions/AdditionalInfo"
+            },
+            "residency_info": {
+              "$ref": "#/definitions/ResidencyInfo"
+            }
+          }
+        }
+      ]
+    },
+    "RussianLegalEntity": {
+      "description": "Анкета юридического лица, резидент РФ",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/LegalEntity"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Наименование, фирменное наименование на русском языке",
+              "type": "string"
+            },
+            "foreign_name": {
+              "description": "Наименование, фирменное наименование на иностранном языке",
+              "type": "string"
+            },
+            "legal_form": {
+              "description": "Организационно-правовая форма",
+              "type": "string"
+            },
+            "inn": {
+              "description": "ИНН",
+              "type": "string"
+            },
+            "registration_info": {
+              "$ref": "#/definitions/RegistrationInfo"
+            },
+            "additional_space": {
+              "description": "Наличие дополнительных площадей",
+              "type": "string"
+            },
+            "property_info": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PropertyInfo"
+              }
+            },
+            "okato_code": {
+              "description": "код в соответствии с ОКАТО",
+              "type": "string"
+            },
+            "okpo_code": {
+              "description": "код в соответствии с ОКПО",
+              "type": "string"
+            },
+            "postal_address": {
+              "type": "string"
+            },
+            "founders_info": {
+              "$ref": "#/definitions/FoundersInfo"
+            },
+            "license_info": {
+              "$ref": "#/definitions/LicenseInfo"
+            },
+            "principal_activity": {
+              "$ref": "#/definitions/Activity"
+            },
+            "legal_owner_info": {
+              "$ref": "#/definitions/LegalOwnerInfo"
+            },
+            "beneficial_owners": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BeneficialOwner"
+              }
+            },
+            "additional_info": {
+              "$ref": "#/definitions/AdditionalInfo"
+            },
+            "residency_info": {
+              "$ref": "#/definitions/ResidencyInfo"
+            }
+          }
+        }
+      ]
+    },
+    "RussianLegalEntityFounder": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Founder"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "inn": {
+              "description": "ИНН",
+              "type": "string"
+            },
+            "ogrn": {
+              "description": "ОГРН",
+              "type": "string"
+            },
+            "fullName": {
+              "description": "Полное наименование юридического лица",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "RussianPrivateEntity": {
+      "type": "object",
+      "description": "Одноразовое платежное средство",
+      "properties": {
+        "person_anthroponym": {
+          "description": "ФИО",
+          "$ref": "#/definitions/PersonAnthroponym"
+        },
+        "birth_date": {
+          "description": "Дата рождения",
+          "type": "string"
+        },
+        "birth_place": {
+          "description": "Место рождения",
+          "type": "string"
+        },
+        "citizenship": {
+          "description": "Гражданство",
+          "type": "string"
+        },
+        "residence_address": {
+          "description": "Адрес места жительства",
+          "type": "string"
+        },
+        "actual_address": {
+          "description": "Фактический адрес",
+          "type": "string"
+        },
+        "contact_info": {
+          "description": "Контактная информация",
+          "$ref": "#/definitions/ContactInfo"
+        }
+      }
+    },
+    "SecuritiesTradingBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "ShopDetails": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "Название магазина",
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "description": "Краткое описание",
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "ShopInfo": {
+      "description": "Изменение деталей магазина",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ShopDetails"
+        },
+        {
+          "type": "object",
+          "required": [
+            "location"
+          ],
+          "properties": {
+            "location": {
+              "$ref": "#/definitions/ShopLocation"
+            }
+          }
+        }
+      ]
+    },
+    "ShopLocation": {
+      "description": "Местоположение магазина, по которому можно его найти",
+      "type": "object",
+      "discriminator": "locationType",
+      "required": [
+        "locationType"
+      ],
+      "properties": {
+        "locationType": {
+          "description": "Тип местоположения",
+          "type": "string"
+        }
+      }
+    },
+    "Snapshot": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Questionary"
+        }
+      ]
+    },
+    "StatementOfDuty": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/FinancialPosition"
+        }
+      ]
+    },
+    "SubError": {
+      "description": "Детализация описания ошибки\n",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "description": "Детализация кода ошибки",
+          "type": "string"
+        },
+        "subError": {
+          "$ref": "#/definitions/SubError"
+        }
+      }
+    },
+    "TransportBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    },
+    "Version": {
+      "description": "Номер версии",
+      "type": "integer",
+      "format": "int64",
+      "minimum": 1,
+      "default": 1
+    },
+    "WholesaleTradeBusiness": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/BusinessInfo"
+        }
+      ]
+    }
+  }
+}
