@@ -364,6 +364,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/EnrichedSearchResult'
+        '400':
+          description: Ошибочные данные в поиске платежей
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                description: |
+                  [Код ошибки](#tag/Error-Codes)
+                type: string
+                enum:
+                  - invalidRequest
+                  - badToken
+                  - invalidDeadline
+              message:
+                description: Человекочитаемое описание ошибки
+                type: string
+                example: Invalid deadline
         '401':
           $ref: '#/responses/Unauthorized'
         '404':
@@ -434,6 +454,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/EnrichedSearchResult'
+        '400':
+          description: Ошибочные данные в поиске возвратов
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                description: |
+                  [Код ошибки](#tag/Error-Codes)
+                type: string
+                enum:
+                  - invalidRequest
+                  - badToken
+                  - invalidDeadline
+              message:
+                description: Человекочитаемое описание ошибки
+                type: string
+                example: Invalid deadline
         '401':
           $ref: '#/responses/Unauthorized'
         '404':
