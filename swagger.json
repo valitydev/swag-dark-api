@@ -62,12 +62,6 @@
       "schema": {
         "$ref": "#/definitions/DefaultLogicError"
       }
-    },
-    "BadRequest": {
-      "description": "Некорректный запрос",
-      "schema": {
-        "$ref": "#/definitions/GeneralError"
-      }
     }
   },
   "parameters": {
@@ -219,9 +213,6 @@
               "$ref": "#/definitions/FileDownload"
             }
           },
-          "400": {
-            "$ref": "#/responses/BadRequest"
-          },
           "401": {
             "$ref": "#/responses/Unauthorized"
           },
@@ -252,9 +243,6 @@
             "schema": {
               "$ref": "#/definitions/FileData"
             }
-          },
-          "400": {
-            "$ref": "#/responses/BadRequest"
           },
           "401": {
             "$ref": "#/responses/Unauthorized"
@@ -290,9 +278,6 @@
             "schema": {
               "$ref": "#/definitions/FileUploadData"
             }
-          },
-          "400": {
-            "$ref": "#/responses/BadRequest"
           },
           "401": {
             "$ref": "#/responses/Unauthorized"
