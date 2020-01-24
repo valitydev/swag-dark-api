@@ -42,12 +42,6 @@
         "$ref": "#/definitions/GeneralError"
       }
     },
-    "QuestionaryNotFound": {
-      "description": "Заданный ресурс не найден",
-      "schema": {
-        "$ref": "#/definitions/GeneralError"
-      }
-    },
     "Unauthorized": {
       "description": "Ошибка авторизации"
     },
@@ -180,11 +174,6 @@
       "description": ""
     },
     {
-      "name": "Questionary",
-      "x-displayName": "Управление анкетами",
-      "description": ""
-    },
-    {
       "name": "Files",
       "x-displayName": "Управление файлами",
       "description": "Получение ссылки на загрузку, получение ссылки на скачивание, информация о файле.\n"
@@ -281,149 +270,6 @@
           },
           "401": {
             "$ref": "#/responses/Unauthorized"
-          }
-        }
-      }
-    },
-    "/questionary": {
-      "post": {
-        "description": "Сервис для работы с анкетами",
-        "tags": [
-          "Questionary"
-        ],
-        "operationId": "saveQuestionary",
-        "parameters": [
-          {
-            "$ref": "#/parameters/requestID"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "format": "string"
-          },
-          {
-            "name": "questionaryParams",
-            "description": "Параметры создаваемого запроса",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/QuestionaryParams"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Анкета создана",
-            "schema": {
-              "$ref": "#/definitions/Version"
-            }
-          },
-          "400": {
-            "description": "Ошибочные данные",
-            "schema": {
-              "type": "object",
-              "required": [
-                "code",
-                "message"
-              ],
-              "properties": {
-                "code": {
-                  "description": "[Код ошибки](#tag/Error-Codes)\n",
-                  "type": "string",
-                  "enum": [
-                    "questionaryNotValidException",
-                    "questionaryVersionConflict",
-                    "questionaryNotFound"
-                  ]
-                },
-                "message": {
-                  "description": "Человекочитаемое описание ошибки",
-                  "type": "string",
-                  "example": "Invalid questionary"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/responses/QuestionaryNotFound"
-          },
-          "409": {
-            "$ref": "#/responses/ExternalIDConflict"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Questionary"
-        ],
-        "operationId": "getQuestionary",
-        "parameters": [
-          {
-            "$ref": "#/parameters/requestID"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "format": "string"
-          },
-          {
-            "name": "questionaryParams",
-            "description": "Параметры создаваемого запроса",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/QuestionaryGetParams"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Анкета создана",
-            "schema": {
-              "$ref": "#/definitions/Snapshot"
-            }
-          },
-          "400": {
-            "description": "Ошибочные данные",
-            "schema": {
-              "type": "object",
-              "required": [
-                "code",
-                "message"
-              ],
-              "properties": {
-                "code": {
-                  "description": "[Код ошибки](#tag/Error-Codes)\n",
-                  "type": "string",
-                  "enum": [
-                    "questionaryNotValidException",
-                    "questionaryVersionConflict",
-                    "questionaryNotFound"
-                  ]
-                },
-                "message": {
-                  "description": "Человекочитаемое описание ошибки",
-                  "type": "string",
-                  "example": "Invalid questionary"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/responses/QuestionaryNotFound"
-          },
-          "409": {
-            "$ref": "#/responses/ExternalIDConflict"
           }
         }
       }
@@ -2405,73 +2251,6 @@
         }
       ]
     },
-    "Questionary": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/QuestionaryParams"
-        }
-      ]
-    },
-    "QuestionaryData": {
-      "description": "Содержание анкеты",
-      "type": "object",
-      "properties": {
-        "contactInfo": {
-          "$ref": "#/definitions/ContactInfo"
-        },
-        "shopInfo": {
-          "$ref": "#/definitions/ShopInfo"
-        },
-        "bankAccount": {
-          "$ref": "#/definitions/BankAccount"
-        },
-        "contractor": {
-          "$ref": "#/definitions/Contractor"
-        }
-      }
-    },
-    "QuestionaryGetParams": {
-      "type": "object",
-      "required": [
-        "questionary_id",
-        "reference"
-      ],
-      "properties": {
-        "questionary_id": {
-          "description": "id анкеты",
-          "type": "string"
-        },
-        "reference": {
-          "$ref": "#/definitions/Reference"
-        }
-      }
-    },
-    "QuestionaryParams": {
-      "type": "object",
-      "required": [
-        "id",
-        "owner_id",
-        "data",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "description": "id анкеты",
-          "type": "string"
-        },
-        "owner_id": {
-          "description": "id владельца анкеты",
-          "type": "string"
-        },
-        "data": {
-          "$ref": "#/definitions/QuestionaryData"
-        },
-        "version": {
-          "$ref": "#/definitions/Version"
-        }
-      }
-    },
     "RecurrentPayer": {
       "type": "object",
       "description": "Многоразовое платежное средство на основе другого платежа",
@@ -3005,14 +2784,6 @@
           "type": "string"
         }
       }
-    },
-    "Snapshot": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Questionary"
-        }
-      ]
     },
     "StatementOfDuty": {
       "type": "object",
