@@ -1,6 +1,0 @@
-type: object
-required:
-  - symbolicCode
-properties:
-  symbolicCode:
-    type: string

@@ -1,6 +1,0 @@
-type: object
-required:
-  - creation
-properties:
-  creation:
-    $ref: '#/definitions/ContractAdjustmentParams'

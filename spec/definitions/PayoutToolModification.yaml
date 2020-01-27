@@ -1,4 +1,0 @@
-type: object
-properties:
-  creation:
-    $ref: '#/definitions/PayoutToolParams'

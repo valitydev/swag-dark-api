@@ -137,3 +137,23 @@ get:
       $ref: '#/responses/NotFound'
     '401':
       $ref: '#/responses/Unauthorized'
+    '400':
+      description: Ошибочные данные в поиске платежей
+      schema:
+        type: object
+        required:
+          - code
+          - message
+        properties:
+          code:
+            description: |
+              [Код ошибки](#tag/Error-Codes)
+            type: string
+            enum:
+              - invalidRequest
+              - badToken
+              - invalidDeadline
+          message:
+            description: Человекочитаемое описание ошибки
+            type: string
+            example: Invalid deadline

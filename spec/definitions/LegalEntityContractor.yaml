@@ -1,7 +1,0 @@
-type: object
-allOf:
-  - $ref: '#/definitions/Contractor'
-  - type: object
-    properties:
-      legal_entity:
-        $ref: '#/definitions/LegalEntity'

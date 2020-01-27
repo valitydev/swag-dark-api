@@ -1,4 +1,0 @@
-description: Набор изменений
-type: array
-items:
-  $ref: '#/definitions/ModificationUnit'

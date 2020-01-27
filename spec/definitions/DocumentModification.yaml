@@ -1,9 +1,0 @@
-type: object
-discriminator: documentModificationType
-required:
-  - documentModificationType
-properties:
-  documentModificationType:
-    type: string
-    enum:
-      - DocumentCreated

@@ -40,10 +40,6 @@ responses:
     description: Заданный ресурс не найден
     schema:
       $ref: '#/definitions/GeneralError'
-  QuestionaryNotFound:
-    description: Заданный ресурс не найден
-    schema:
-      $ref: '#/definitions/GeneralError'
   Unauthorized:
     description: Ошибка авторизации
   ExternalIDConflict:
@@ -54,10 +50,6 @@ responses:
     description: Неверные данные
     schema:
       $ref: '#/definitions/DefaultLogicError'
-  BadRequest:
-    description: Некорректный запрос
-    schema:
-      $ref: '#/definitions/GeneralError'
 
 parameters:
   requestID:
@@ -76,20 +68,6 @@ parameters:
     type: string
     maxLength: 40
     minLength: 1
-  claimID:
-    name: claimID
-    in: path
-    description: Идентификатор заявки
-    required: true
-    type: integer
-    format: int64
-  claimRevision:
-    name: claimRevision
-    in: query
-    description: Версия заявки
-    required: true
-    type: integer
-    format: int32
   paymentID:
     name: paymentID
     in: path
@@ -174,23 +152,6 @@ tags:
   - name: Search
     x-displayName: Управление поиском
     description: ""
-
-  - name: Questionary
-    x-displayName: Управление анкетами
-    description: ""
-
-  - name: Claims
-    x-displayName: Заявки
-    description: >
-      Некоторая область данных может быть изменена только после премодерации на
-      стороне платформы. Например, создание и активация новых магазинов,
-      изменение финансовых данных вашего участника и т.п. требуют ручной
-      проверки сотрудниками RBKmoney. Попытка изменить такие данные приводит к
-      автоматическому созданию заявки на изменение данных. До тех пор, пока
-      заявка не одобрена, вы можете добавлять изменения. После одобрения они
-      будут применены к набору данных. В случае отказа по заявке данные
-      останутся в неизменном состоянии. Ближайшим аналогом заявок можно
-      представить Pull Request в распределенных системах контроля версий.
 
   - name: Files
     x-displayName: Управление файлами
