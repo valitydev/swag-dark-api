@@ -1,9 +1,9 @@
 allOf:
- - $ref: '#/definitions/DigitalWalletDetails'
- - type: object
-   required:
-     - phoneNumberMask
-   properties:
+  - $ref: '#/definitions/DigitalWalletDetails'
+  - type: object
+    required:
+      - phoneNumberMask
+    properties:
       phoneNumberMask:
         type: string
         description: |

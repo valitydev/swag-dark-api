@@ -40,10 +40,10 @@ get:
         - succeeded
         - failed
     - x-rebillyMerge:
-      - name: continuationToken
-        in: query
-        required: false
-      - $ref: '#/definitions/ContinuationToken'
+        - name: continuationToken
+          in: query
+          required: false
+        - $ref: '#/definitions/ContinuationToken'
   responses:
     '200':
       description: Найденные возвраты

@@ -1,24 +1,24 @@
 type: object
 description: Одноразовое платежное средство
 properties:
-    person_anthroponym:
-      description: ФИО
-      $ref: '#/definitions/PersonAnthroponym'
-    birth_date:
-      description: Дата рождения
-      type: string
-    birth_place:
-      description: Место рождения
-      type: string
-    citizenship:
-      description: Гражданство
-      type: string
-    residence_address:
-      description: Адрес места жительства
-      type: string
-    actual_address:
-      description: Фактический адрес
-      type: string
-    contact_info:
-      description: Контактная информация
-      $ref: '#/definitions/ContactInfo'
+  person_anthroponym:
+    description: ФИО
+    $ref: '#/definitions/PersonAnthroponym'
+  birth_date:
+    description: Дата рождения
+    type: string
+  birth_place:
+    description: Место рождения
+    type: string
+  citizenship:
+    description: Гражданство
+    type: string
+  residence_address:
+    description: Адрес места жительства
+    type: string
+  actual_address:
+    description: Фактический адрес
+    type: string
+  contact_info:
+    description: Контактная информация
+    $ref: '#/definitions/ContactInfo'
