@@ -65,4 +65,3 @@ allOf:
           - readOnly: true
       cart:
         $ref: '#/definitions/InvoiceCart'
-
