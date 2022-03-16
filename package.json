@@ -1,5 +1,5 @@
 {
-  "name": "RBKmoney-darkapi-spec",
+  "name": "Vality-darkapi-spec",
   "version": "0.0.1",
   "dependencies": {
     "bower": "^1.7.7",
@@ -14,7 +14,8 @@
     "portfinder": "^1.0.3",
     "shelljs": "^0.7.0",
     "swagger-repo": "^1.0.0",
-    "swagger-ui": "^2.1.4"
+    "swagger-ui": "^2.1.4",
+    "redoc-cli": "^0.10.2"
   },
   "private": true,
   "scripts": {
