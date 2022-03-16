@@ -17,6 +17,7 @@
 5. Once you finish with the changes you can run tests using: `npm test`
 6. Share you changes with the rest of the world by pushing to GitHub :smile:
 
+
 Пример подключения в проект клиентской зависимости: 
 ```      
 <dependency>
