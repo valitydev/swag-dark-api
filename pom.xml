@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>swag-dark-api</artifactId>
-    <version>SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>swag-dark-api</name>
@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <default.package>com.rbkmoney.swag.dark_api</default.package>
+        <default.package>dev.vality.swag.dark_api</default.package>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <swagger-annotations-version>1.5.21</swagger-annotations-version>
         <jodatime-version>2.7</jodatime-version>
