@@ -1,8 +1,15 @@
 {
-  "name": "Vality-darkapi-spec",
-  "version": "0.0.1",
-  "dependencies": {
-    "bower": "^1.7.7",
+  "name": "@vality/swag-dark-api",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "node ./scripts/build.js",
+    "swagger": "swagger-repo",
+    "validate": "swagger-repo validate",
+    "start": "gulp serve",
+    "codegen": "vality-openapi generate ./web_deploy/swagger.json"
+  },
+  "devDependencies": {
+    "@vality/openapi-generator-cli": "0.1.1-fbfe66e.0",
     "connect": "^3.4.1",
     "cors": "^2.7.1",
     "deploy-to-gh-pages": "^1.1.0",
@@ -12,16 +19,9 @@
     "json-merge-patch": "^0.2.3",
     "npm": "^5.8.0",
     "portfinder": "^1.0.3",
+    "redoc-cli": "^0.10.2",
     "shelljs": "^0.7.0",
     "swagger-repo": "^1.0.0",
-    "swagger-ui": "^2.1.4",
-    "redoc-cli": "^0.10.2"
-  },
-  "private": true,
-  "scripts": {
-    "build": "node ./scripts/build.js",
-    "swagger": "swagger-repo",
-    "validate": "swagger-repo validate",
-    "start": "gulp serve"
+    "swagger-ui": "^2.1.4"
   }
 }
