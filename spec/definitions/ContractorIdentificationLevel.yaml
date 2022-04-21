@@ -1,5 +1,0 @@
-type: integer
-enum:
-  - 100 # none
-  - 200 # partial
-  - 300 # full

@@ -1,7 +1,0 @@
-type: object
-discriminator: founderType
-required:
-  - founderType
-properties:
-  founderType:
-    type: string

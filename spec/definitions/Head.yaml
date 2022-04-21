@@ -1,4 +1,0 @@
-description: Маркер вершины истории
-type: object
-allOf:
-  - $ref: '#/definitions/Reference'
