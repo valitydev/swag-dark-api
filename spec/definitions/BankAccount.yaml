@@ -1,7 +1,0 @@
-type: object
-discriminator: bankAccountType
-required:
-  - bankAccountType
-properties:
-  bankAccountType:
-    type: string

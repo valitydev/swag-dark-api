@@ -1,7 +1,0 @@
-type: object
-allOf:
-  - $ref: '#/definitions/BusinessInfo'
-  - type: object
-    properties:
-      description:
-        type: string

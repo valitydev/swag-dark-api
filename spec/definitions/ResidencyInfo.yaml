@@ -1,8 +1,0 @@
-description: Информация об иностранном налоговом резиденстве
-type: object
-discriminator: residencyInfoType
-required:
-  - residencyInfoType
-properties:
-  residencyInfoType:
-    type: string
